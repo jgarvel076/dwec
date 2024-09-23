@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            function empresa(){
+                //pido que añada el sueldo y su prima
+                var sueldo = prompt("Introduzca el sueldo:");
+                var antigüedad = prompt("Introduzca la antigüedad:");
+                //Comparo el sueldo y el antigüedad
+                if (Number(sueldo) > 750 && Number(antigüedad) >= 10) {
+                    var salario1 = Number(sueldo) * 0.1 + Number(sueldo);
+                    alert(salario1);
+                } else if (Number(sueldo) >= 750 && Number(antigüedad) >= 10){
+                    var salario2 = Number(sueldo) * 0.05 + Number(sueldo);
+                    alert(salario2);
+                } else if (Number(antigüedad) < 10){
+                    alert(sueldo);
+                }
+            }
+        </script>
+    </head>
+
+    <body onload="javascript:empresa();"></body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            function comparar(){
+                //pido que añada dos numeros
+                var num1 = prompt("Introduzca el primer num:");
+                var num2 = prompt("Introduzca el segundo num:");
+                //Comparo el num1 y el num2
+                if (Number(num1) > Number(num2)) {
+                    //si num1 es mayor
+                    alert(num1 + " es mayor que " + num2);
+                } else{
+                    //si num2 es mayor
+                    alert(num2 + " es mayor que "+ num1);
+                }
+            }
+        </script>
+    </head>
+
+    <body onload="javascript:comparar();"></body>
+</html>

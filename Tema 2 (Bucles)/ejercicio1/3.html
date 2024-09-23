@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            function entre(){
+                //pido que añada tres numeros
+                var num1 = prompt("Introduzca el primer num:");
+                var num2 = prompt("Introduzca el segundo num:");
+                var num3 = prompt("Introduzca el tercer num:");
+                //Comparo el num1, num2 y num3 con 10 y 100
+                if (num1 > 10 && num1 < 100 && num2 > 10 && num2 < 100 && num3 > 10 && num3 < 100) {
+                    //si num(s) son mayores que 10 y menores que 100
+                    alert("ok");
+                } else{
+                    //si algun num no cumple
+                    alert("No cumple");
+                }
+            }
+        </script>
+    </head>
+
+    <body onload="javascript:entre();"></body>
+</html>
