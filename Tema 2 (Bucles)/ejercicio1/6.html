@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            function ecuacion(){
+                //pido que añada 
+                var a = prompt("Introduzca el coeficiente a:");
+                var b = prompt("Introduzca el coeficiente b:");
+                var c = prompt("Introduzca el coeficiente c:");
+                //si b esta delante de un +
+                var dentro = Number(b) * Number(b) - 4 * Number(a) * Number(c); 
+                var raiz = Math.sqrt(Number(dentro));
+                var arriba1 = - Number(b) + Number(raiz);
+                var arriba2 = - Number(b) - Number(raiz);
+                var abajo = Number(a) * 2;
+                var pos = Number(arriba1) % Number(abajo);
+                var neg = Number(arriba2) % Number(abajo);
+
+                alert(pos + neg);
+            }
+        </script>
+    </head>
+
+    <body onload="javascript:ecuacion();"></body>
+</html>

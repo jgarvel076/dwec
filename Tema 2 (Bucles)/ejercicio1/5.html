@@ -9,11 +9,24 @@
                 var num3 = prompt("Introduzca el tercer num:");
                 //si num1 es mayor que num2 y num3
                 if (Number(num1) > Number(num2) > Number(num3)) {
-                    //si num1 es mayor que num2 y num3
-                    alert(num1 + ">" + num2 + ">" +num3);
+                    //alert(num1 + ">" + num2 + ">" +num3);
+                    var opcion1 = num1 + ">" + num2 + ">" +num3;
+                    alert(opcion1);
+                    //si num1 es mayor que num3 y num2
+                } if (Number(num1) > Number(num3) > Number(num2)){
+                    alert(num1 + ">" + num3 + ">" +num2);
+                //si num2 es mayor que num1 y num3
                 } if (Number(num2) > Number(num1) > Number(num3)){
-                    //si num2 es mayor que num1 y num3
-                    alert(num2 + ">" + num2 + ">" +num3);
+                    alert(num2 + ">" + num1 + ">" +num3);
+                //si num2 es mayor que num3 y num1
+                } if (Number(num2) > Number(num3) > Number(num1)){
+                    alert(num2 + ">" + num3 + ">" +num1);
+                //si num3 es mayor que num1 y num2
+                } if (Number(num3) > Number(num1) > Number(num2)){
+                    alert(num3 + ">" + num1 + ">" +num2);
+                //si num3 es mayor que num2 y num1
+                } if (Number(num3) > Number(num2) > Number(num1)){
+                    alert(num3 + ">" + num2 + ">" +num1);
                 }
             }
         </script>
