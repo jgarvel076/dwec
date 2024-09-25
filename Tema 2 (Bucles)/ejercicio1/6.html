@@ -9,19 +9,18 @@
                 var c = prompt("Introduzca el coeficiente c:");
                 //si b esta delante de un +
                 var dentro = Number(b) * Number(b) - 4 * Number(a) * Number(c); 
-                if (dentro <= 0){
+                if (dentro < 0){
                     alert("el contenido de la raiz debe ser mayor o igual a 0");
-                    brake;
-                }
+                }else{
                 var raiz = Math.sqrt(Number(dentro));
                 var arriba1 = - Number(b) + Number(raiz);
                 var arriba2 = - Number(b) - Number(raiz);
                 var abajo = Number(a) * 2;
-                //falla la division
-                var pos = Number(arriba1) % Number(abajo);
-                var neg = Number(arriba2) % Number(abajo);
+                var pos = Number(arriba1) / Number(abajo);
+                var neg = Number(arriba2) / Number(abajo);
 
-                alert(pos);
+                alert(pos + " y " +  neg);
+                }
             }
         </script>
     </head>

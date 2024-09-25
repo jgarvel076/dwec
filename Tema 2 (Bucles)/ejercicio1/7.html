@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            function factorial(){
+                //pido que añada 
+                var num = Number(prompt("Introduzca el numero:"));
+                //declaro variable result (cambiara conforme se vaya haciendo el calc)
+                var result = 1;
+
+                do{
+                    //declaramos la operacion a calcular
+                    var calc = Number(num * 1);
+                    //cambiamos la variable por la solucion de result * calc
+                    result = result*calc
+                    //decrementamos el numero
+                    num--
+
+                }while (num > 0){
+
+                    alert(result);
+
+                }
+            }
+        </script>
+    </head>
+
+    <body onload="factorial();"></body>
+</html>

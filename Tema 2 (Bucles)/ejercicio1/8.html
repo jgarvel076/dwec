@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            function descompopner(){
+                //pido que añada 
+                var num = Number(prompt("Introduzca el numero:"));
+                var divisor = 2;
+                var result = "";
+                var primero = true;
+
+                do{
+
+                   if (num % divisor != 0){
+
+                    ++divisor
+
+                   }else{
+
+                    num = Number(num / divisor);
+
+                    if(primero){
+                        result = result + divisor
+                        primero=false;
+                    }else{
+                        result = result + "*" + divisor 
+                    }
+                    
+                   }
+
+
+                } while (num > 1);
+
+                alert(result);
+
+            }
+        </script>
+    </head>
+
+    <body onload="descompopner();"></body>
+</html>
