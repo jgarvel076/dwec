@@ -5,21 +5,26 @@
             function descompopner(){
                 //pido que añada 
                 var num = Number(prompt("Introduzca el numero:"));
+                //añado el primer divisor
                 var divisor = 2;
+                //almacenare los divisores usados en esta variable
                 var result = "";
+                //para imprimir el primer divisor
                 var primero = true;
 
                 do{
-
+                    //si el resto no es cero aumentamos el divisor
                    if (num % divisor != 0){
 
                     ++divisor
 
                    }else{
-
+                    //cambiamos num al resultado del num / divisor
                     num = Number(num / divisor);
 
+                    //imprimimos con los asteriscos
                     if(primero){
+                        //el primer numero no debe tener * delante
                         result = result + divisor
                         primero=false;
                     }else{
