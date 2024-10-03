@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarea 1. Tema 5 </title>
+
+    <script>
+        function introducirNumeros() {
+            var numeros = [];
+            var salir = false;
+
+            while (salir == false) {
+
+                    var numero = prompt("Introduzca una serie de números" + ".\nPara dejar de introducir valores pulse f.");
+                    if (numero == null) return;
+                    
+                    if (numero == "f") {
+                        salir = true;
+                        media(numeros);
+                    }
+                    
+                    if(salir==false){
+                        numeros.push(numero);
+                    }
+                    
+
+                    
+
+                }
+                alert(numeros)
+        }
+
+        function media(numeros) {
+            var suma = 0;
+            for (var i = 0; i < numeros.length; i++) {
+                suma += numeros[i];
+            }
+            alert("La media de los números introducidos es: " + suma / numeros.length);
+
+           rango(numeros)
+        }
+
+        function rango(numeros) {
+
+            var numMin = Number(numeros[0]);
+            var numMax = Number(numeros[0]);
+            var valorRango;
+
+            for (var ind = 0; ind < numeros.length; ind++) {
+                if (numMin > Number(numeros[ind])) {
+                    numMin = Number(numeros[ind]);
+                }
+                if (numMax < Number(numeros[ind])) {
+                    numMax = Number(numeros[ind]);
+                }
+            }
+
+            valorRango = numMax - numMin;
+            alert("El rango de los números introducidos es: " + valorRango);
+
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <body onload="javascript:introducirNumeros()" ;></body>
+
+</body>
+
+</html>
