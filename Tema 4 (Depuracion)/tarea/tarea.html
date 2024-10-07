@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
     <script>
         function introducirNumeros() {
             var numeros = [];
@@ -27,34 +26,6 @@
                 }
             } while (fuera === false)
             media(numeros);
-=======
-    <title>Tarea 1. Tema 5 </title>
-
-    <script>
-        function introducirNumeros() {
-            var numeros = [];
-            var salir = false;
-
-            while (salir == false) {
-
-                    var numero = prompt("Introduzca una serie de números" + ".\nPara dejar de introducir valores pulse f.");
-                    if (numero == null) return;
-                    
-                    if (numero == "f") {
-                        salir = true;
-                        media(numeros);
-                    }
-                    
-                    if(salir==false){
-                        numeros.push(numero);
-                    }
-                    
-
-                    
-
-                }
-                alert(numeros)
->>>>>>> 340be8bbabd4633dafc3602f6fc95f20e3410606
         }
 
         function media(numeros) {
@@ -62,16 +33,10 @@
             for (var i = 0; i < numeros.length; i++) {
                 suma += numeros[i];
             }
-<<<<<<< HEAD
             alert("La media de los números introducidos es: " + (suma / numeros.length));
 
             rango(numeros);
 
-=======
-            alert("La media de los números introducidos es: " + suma / numeros.length);
-
-           rango(numeros)
->>>>>>> 340be8bbabd4633dafc3602f6fc95f20e3410606
         }
 
         function rango(numeros) {
@@ -91,7 +56,6 @@
 
             valorRango = numMax - numMin;
             alert("El rango de los números introducidos es: " + valorRango);
-<<<<<<< HEAD
             
             moda(numeros);
 
@@ -151,11 +115,6 @@
             }
         }
 
-=======
-
-        }
-
->>>>>>> 340be8bbabd4633dafc3602f6fc95f20e3410606
     </script>
 </head>
 
