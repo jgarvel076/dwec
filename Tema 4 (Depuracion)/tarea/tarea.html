@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>     
 <html lang="es">
 
 <head>
@@ -89,8 +89,13 @@
             }
 
             // Verificar si no hay ningun numero que se repita (frecuencia 1)
-            if (maxFrecuencia === 1) {
-                alert("No hay moda, ningún número se repite.");
+            var mismaFrecuencia = true;
+            for (var i = 0; i < contador.length; i++) {
+                if (contador[i][1] !== maxFrecuencia) {
+                    mismaFrecuencia = false;
+                    break;
+                }
+                alert("No hay moda, todos los números se repiten la misma cantidad de veces.");
                 return;
             }
 
