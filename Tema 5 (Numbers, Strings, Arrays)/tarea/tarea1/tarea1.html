@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        function introducirNumeros() {
+            var numeros = [];
+            var fuera = false;
+            do {
+                var variables = prompt("Introduce los numeros" + "\n" + "pulsa f para salir");
+                if (variables === "f") {
+                    fuera = true;
+                    break;
+                } else {
+                    var valores = parseInt(variables);
+                    if (Number.isInteger(valores) && valores >= 0) {
+                        numeros.push(valores);
+                    } else {
+                        alert("Introduzca un numero correcto")
+                    }
+                }
+            } while (fuera === false)
+            mediana(numeros);
+        }
+        function mediana(numeros) {
+
+            var medio = Math.floor(numeros.length / 2);
+            //ordenamos los numeros
+            numeros.sort(function (a,b){return a-b});
+            
+
+            if (numeros.lenght % 2 == 0){
+                par = true;
+                var num1 = numeros[numeros.lenght / 2];
+                var num2 = numeros[(numeros.lenght / 2) - 1];
+                var operacion = (num1 + num2) / 2;
+                alert("La mediana es: " + operacion);
+
+            }else{
+                par = false;
+                alert("La mediana es: " + numeros[medio]);
+            }
+            
+        }
+       
+        
+    </script>
+</head>
+<body>
+    <body onload="javascript:introducirNumeros()" ;></body>
+</body>
+</html>
