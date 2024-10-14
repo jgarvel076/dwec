@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        function introducirNumeros() {
+             // Declaro el array bidimensional
+            var matriz = [];
+            // Declaro el array vacío que actuará como fila
+            var fila = [];
+            // Declaro el valor de entrada 
+            var introducirNumeros = String;
+
+            while (introducirNumeros != null) {
+            
+                introducirNumeros = prompt(
+                    "Introduce los elementos del array a introducir en la fila \nPara terminar de introducir datos en la fila, introduzca s \nPara parar de añadir valores pulse f"
+                );
+
+                if (introducirNumeros == null) {
+
+                    alert("Has finalizado el programa");
+
+                } else if (introducirNumeros === "s") {
+                    // Mandamos los datos de la fila al array bidimensional
+                    matriz.push(fila);
+                    // Reiniciamos la variable para empezar una nueva fila
+                    fila = [];
+
+                } else if (introducirNumeros === "f") {
+                    matriz.push(fila);
+
+                    // Convertimos la matriz en array unidimensional y llamamos a la función parImpar
+                    var numeros = matrizPasaArray(matriz);
+                    parImpar(numeros);
+
+                } else {
+                    fila.push(Number(introducirNumeros));
+
+                }
+            }   
+        }
+
+       function matrizPasaArray(matriz) {
+            //array unidimensional
+            var numeros = [];
+            
+            //accede a cada fila
+            for (var i = 0; i < matriz.length; i++) {
+                //accede a cada columna
+                for (var j = 0; j < matriz[i].length; j++) {
+                    //agregamos cada valor al array unidimensional
+                    numeros.push(matriz[i][j]);
+                }
+            }
+            
+            return numeros;
+        }
+
+        function parImpar(numeros){
+            var par = [];
+            var impar = [];
+
+            for (var i = 0; i < numeros.length; i++){
+                if (numeros[i] % 2 == 0) {
+                    par.push(numeros[i]);
+                }else {
+                    impar.push(numeros[i])
+                }
+            }
+
+            alert("Numeros pares: " + par + "\n" + "Numeros impares: " + impar);
+        }
+        
+    </script>
+</head>
+<body>
+    <body onload="javascript:introducirNumeros()" ;></body>
+</body>
+</html>
