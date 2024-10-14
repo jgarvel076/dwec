@@ -25,23 +25,31 @@
         }
         function mediana(numeros) {
 
+            //Encontramos la posicion de los numeros de la mitad del array
             var medio = Math.floor(numeros.length / 2);
-            //ordenamos los numeros
-            numeros.sort(function (a,b){return a-b});
-            
+            var medio2 = Math.floor(numeros.length/2-1);
 
-            if (numeros.lenght % 2 == 0){
+            //Ordenamos los valores de los numeros del array
+            numeros.sort(function (a, b) { return a - b });
+            var par=""; 
+
+            //creamos las situaciones si es par o impar
+            if (numeros.length % 2 === 0) {
                 par = true;
-                var num1 = numeros[numeros.lenght / 2];
-                var num2 = numeros[(numeros.lenght / 2) - 1];
-                var operacion = (num1 + num2) / 2;
-                alert("La mediana es: " + operacion);
-
-            }else{
+            } else if (numeros.length % 2 !== 0) {
                 par = false;
-                alert("La mediana es: " + numeros[medio]);
             }
-            
+
+            //si es par
+            if (par == false){
+                alert("La mediana es " + numeros[medio]);
+
+            //si no es par
+            }else if(par == true) {
+                var calculo = (numeros[medio]+numeros[medio2])/2;
+                alert ("La mediana es "+calculo)
+            }
+
         }
        
         
