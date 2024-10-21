@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        function introducirNumeros() {
+            // Declaro el array bidimensional
+            var matriz = [];
+            // Declaro el array vacío que actuará como fila
+            var fila = [];
+            // Declaro el valor de entrada 
+            var introducirNumeros = '';
+
+            while (introducirNumeros != null) {
+                introducirNumeros = prompt(
+                    "Inserte notas Criterio: '(s' Para insertar nuevo criterio,'f' para finalizar)"
+                );
+
+                if (introducirNumeros === null) {
+                    alert("Has finalizado el programa");
+                } else if (introducirNumeros === "s") {
+                    // Mandamos los datos de la fila al array bidimensional
+                    matriz.push(fila);
+                    // Reiniciamos la variable para empezar una nueva fila
+                    fila = [];
+                } else if (introducirNumeros === "f") {
+                    // Solo se agrega la fila si no está vacía
+                    if (fila.length > 0) {
+                        matriz.push(fila);
+                    }
+
+                    var numeros = matrizPasaArray(matriz);
+                    media(numeros);
+                } else {
+                    fila.push(Number(introducirNumeros));
+                }
+            }
+        }
+
+        function matrizPasaArray(matriz) {
+            // array unidimensional
+            var numeros = [];
+            
+            // accede a cada fila
+            for (var i = 0; i < matriz.length; i++) {
+                // accede a cada columna
+                for (var j = 0; j < matriz[i].length; j++) {
+                    // agregamos cada valor al array unidimensional
+                    numeros.push(matriz[i][j]);
+                }
+            }
+            
+            return numeros;
+        }
+    
+        function media(numeros) {
+            var suma = 0;
+            for (var i = 0; i < numeros.length; i++) {
+                suma += numeros[i];
+                alert("la media de las notas del criterio es " + (suma / numeros.length))
+            }
+
+            maximo(numeros);
+        }
+
+        function maximo(numeros) {
+            var numMax = Number(numeros[0]);
+            var valorMaximo;
+            for (var ind = 0; ind < numeros.length; ind++) {
+                if (numMax < Number(numeros[ind])) {
+                    numMax = Number(numeros[ind]);
+                }
+            }
+            valorMaximo = numMax;
+            console.log("El rango de los números introducidos es: " + valorMaximo);
+        }
+        
+    </script>
+</head>
+<body onload="javascript:introducirNumeros()"></body>
+</html>
