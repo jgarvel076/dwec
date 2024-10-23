@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        function menu() {
+
+            //declaro un array cesta donde guardar los articulos
+            var cesta= [];
+
+            while (menu != null) {
+                menu = prompt(
+                    "1.Ver cesta \n2.Insertar un  articulo \n3.Borrar un articulo \n4.Vaciar cesta \n5.Salir"
+                );
+
+                if (menu === null) {
+                    alert("Has finalizado el programa");
+                } else if (menu === "1") {
+                    verCesta(cesta);
+                } else if (menu === "2") {
+                    insertarArticulo(cesta);
+                } else if (menu === "3") {
+                    borrarArticulo(cesta);
+                } else if (menu === "4") {
+                    cesta = [];
+                    alert("La cesta ha sido vaciada.");
+                } else if (menu === "5") {
+                    alert("Has finalizado el programa");
+                    break;
+                }
+            }
+        }
+
+        function verCesta(cesta) {
+            if (cesta.length === 0) {
+                alert("La cesta está vacía.");
+            } else {
+                // encabezado de la tabla
+                let contenidoCesta = "Cod. Nombre  Precio Cantidad Subtotal\n";
+                let total = 0; // definimos el total como una variable
+
+                // recorremos el array cesta
+                for (let i = 0; i < cesta.length; i++) {
+                    // calculamos el subtotal
+                    let subtotal = cesta[i].precio * cesta[i].cantidad;
+                    total += subtotal; // Sumamos el subtotal al total
+                    contenidoCesta += `${cesta[i].cod}        ${cesta[i].nombre}         ${cesta[i].precio}         ${cesta[i].cantidad}         ${subtotal}\n`;
+                }
+
+                // ponemos el total
+                contenidoCesta += `\nTotal:     ${total}€\n`;
+
+                alert(contenidoCesta);
+            }
+        }
+
+        function insertarArticulo(cesta) {
+
+            //creo el objeto articulo con sus propiedades 
+            let cod = cesta.length + 1;
+
+            let nombre = prompt("Introduce el nombre ");
+
+            let precio = prompt("Introduce el precio");
+
+            let cantidad = prompt("Introduce la cantidad");
+
+            let articulos = {cod :cod , nombre , precio , cantidad  };
+            cesta.push(articulos)
+
+            alert("Articulo introducido con exito");
+
+            return menu;
+        }
+
+        function borrarArticulo(cesta) {
+            let codArticulo = prompt("Introduce el código del artículo que deseas borrar");
+            //iguala el codigo del articulo con el codigo que he añadido antes 
+            let indice = cesta.findIndex(articulo => articulo.cod == codArticulo);
+
+            if (indice !== -1) {
+                //con el splice borra elementos
+                cesta.splice(indice, 1);
+                alert("Artículo borrado con éxito");
+            } else {
+                alert("No se encontró un artículo con ese código.");
+            }
+        }
+        
+    </script>
+</head>
+<body onload="javascript:menu()"></body>
+</html>
