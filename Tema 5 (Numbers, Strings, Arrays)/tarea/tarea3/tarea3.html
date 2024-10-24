@@ -8,6 +8,7 @@
 
             //declaro un array cesta donde guardar los articulos
             var cesta= [];
+            var codigo = 1;
 
             while (menu != null) {
                 menu = prompt(
@@ -19,9 +20,10 @@
                 } else if (menu === "1") {
                     verCesta(cesta);
                 } else if (menu === "2") {
-                    insertarArticulo(cesta);
+                    insertarArticulo(cesta, codigo);
+                    codigo ++;
                 } else if (menu === "3") {
-                    borrarArticulo(cesta);
+                    borrarArticulo(cesta,codigo);
                 } else if (menu === "4") {
                     cesta = [];
                     alert("La cesta ha sido vaciada.");
@@ -55,10 +57,10 @@
             }
         }
 
-        function insertarArticulo(cesta) {
+        function insertarArticulo(cesta, codigo) {
 
             //creo el objeto articulo con sus propiedades 
-            let cod = cesta.length + 1;
+            let cod = codigo;
 
             let nombre = prompt("Introduce el nombre ");
 
@@ -66,7 +68,7 @@
 
             let cantidad = prompt("Introduce la cantidad");
 
-            let articulos = {cod :cod , nombre , precio , cantidad  };
+            let articulos = {cod , nombre , precio , cantidad  };
             cesta.push(articulos)
 
             alert("Articulo introducido con exito");
@@ -74,7 +76,7 @@
             return menu;
         }
 
-        function borrarArticulo(cesta) {
+        function borrarArticulo(cesta, codigo) {
             let codArticulo = prompt("Introduce el código del artículo que deseas borrar");
             //iguala el codigo del articulo con el codigo que he añadido antes 
             let indice = cesta.findIndex(articulo => articulo.cod == codArticulo);
