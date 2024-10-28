@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        function menu() {
+            class Empleado {
+                #edad; //Variable privada
+               
+                constructor(edad, nombre, apellido){    
+                this.#edad=edad;
+                this.nombre=nombre;
+                this.apellido=apellido
+                }
+                muestra ( ) {return this.nombre+" "+this.apellido+" edad "+this.#edad+" años"};
+            
+            }
+            class Profesor extends Empleado {
+                cargo;
+                constructor(edad, nombre, apellido, cargo){  
+                    super(edad, nombre, apellido);  
+                    this.cargo=cargo;
+                }   
+                muestraCargo () {return this.cargo};
+            }
+            var profesor1= new Profesor (20,"Juanito", "Piruleta", "Jefe de estudio");
+            alert(profesor1.muestra()+" con cargo "+profesor1.muestraCargo());
+        }
+        
+    </script>
+</head>
+<body onload="javascript:menu()"></body>
+</html>

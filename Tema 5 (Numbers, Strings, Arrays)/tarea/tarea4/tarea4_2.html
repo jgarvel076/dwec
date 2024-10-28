@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        class Articulo {
+            #cod;
+            #nombre;
+            #precio;
+            #cantidad;
+            constructor(cod, nombre, precio, cantidad) {
+                this.#cod = cod;
+                this.#nombre = nombre;
+                this.#precio = parseFloat(precio);
+                this.#cantidad = parseInt(cantidad);
+            }
+
+            getSubtotal() {
+                return this.precio * this.cantidad;
+            }
+        }
+
+        class Cesta {
+            constructor() {
+                this.articulos = [];
+                this.codigo = 1;
+            }
+
+            verCesta() {
+                if (this.articulos.length === 0) {
+                    alert("La cesta está vacía.");
+                } else {
+                    let contenidoCesta = "Cod. Nombre  Precio Cantidad Subtotal\n";
+                    let total = 0;
+
+                    for (let articulo of this.articulos) {
+                        let subtotal = articulo.getSubtotal();
+                        total += subtotal;
+                        contenidoCesta += `${articulo.cod}        ${articulo.nombre}         ${articulo.precio}         ${articulo.cantidad}         ${subtotal}\n`;
+                    }
+
+                    contenidoCesta += `\nTotal:     ${total}€\n`;
+                    alert(contenidoCesta);
+                }
+            }
+
+            insertarArticulo() {
+                let nombre = prompt("Introduce el nombre");
+                let precio = prompt("Introduce el precio");
+                let cantidad = prompt("Introduce la cantidad");
+
+                if (nombre && precio && cantidad) {
+                    let nuevoArticulo = new Articulo(this.codigo, nombre, precio, cantidad);
+                    this.articulos.push(nuevoArticulo);
+                    alert("Artículo introducido con éxito");
+                    this.codigo++;
+                }
+            }
+
+            borrarArticulo() {
+                let codArticulo = prompt("Introduce el código del artículo que deseas borrar");
+                let indice = this.articulos.findIndex(articulo => articulo.cod == codArticulo);
+
+                if (indice !== -1) {
+                    this.articulos.splice(indice, 1);
+                    alert("Artículo borrado con éxito");
+                } else {
+                    alert("No se encontró un artículo con ese código.");
+                }
+            }
+
+            vaciarCesta() {
+                this.articulos = [];
+                alert("La cesta ha sido vaciada.");
+            }
+        }
+
+        // Ejecución del programa principal directamente al cargar el script
+        let cesta = new Cesta();
+        let opcion;
+
+        while (opcion !== "5") {
+            opcion = prompt("1.Ver cesta \n2.Insertar un artículo \n3.Borrar un artículo \n4.Vaciar cesta \n5.Salir");
+
+            if (opcion === "1") {
+                cesta.verCesta();
+            } else if (opcion === "2") {
+                cesta.insertarArticulo();
+            } else if (opcion === "3") {
+                cesta.borrarArticulo();
+            } else if (opcion === "4") {
+                cesta.vaciarCesta();
+            } else if (opcion === "5") {
+                alert("Has finalizado el programa");
+            }
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>
