@@ -4,29 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-        //clase articulo
+        // clase articulo
         class Articulo {
-            //creo objeto privado donde almacenamos los atributos publicos
-            #art={};
-            //los atributos son publicos para poder mandarles nuevos valores a la hora de crear articulo
+            // objeto privado para almacenar atributos
+            #art = {};
+            // atributos públicos
             cod;
             nombre;
             precio;
             cantidad;
+
             constructor(cod, nombre, precio, cantidad) {
                 this.#art.cod = cod;
                 this.#art.nombre = nombre;
-                //pasa a decimal
                 this.#art.precio = parseFloat(precio);
-                //pasa a entero
                 this.#art.cantidad = parseInt(cantidad);
-
-                //retornamos el objeto privado
                 return this.#art;
             }
         }
 
-        //clase cesta
+        // clase cesta
         class Cesta {
             constructor() {
                 this.articulos = [];
@@ -82,25 +79,44 @@
             }
         }
 
-        //menu
-        let cesta = new Cesta();
-        let opcion;
+        // clase menu
+        class Menu {
+            constructor() {
+                this.cesta = new Cesta();
+            }
 
-        while (opcion !== "5") {
-            opcion = prompt("1.Ver cesta \n2.Insertar un artículo \n3.Borrar un artículo \n4.Vaciar cesta \n5.Salir");
+            mostrar() {
+                let opcion;
 
-            if (opcion === "1") {
-                cesta.verCesta();
-            } else if (opcion === "2") {
-                cesta.insertarArticulo();
-            } else if (opcion === "3") {
-                cesta.borrarArticulo();
-            } else if (opcion === "4") {
-                cesta.vaciarCesta();
-            } else if (opcion === "5") {
-                alert("Has finalizado el programa");
+                while (opcion !== "5") {
+                    opcion = prompt("1. Ver cesta \n2. Insertar un artículo \n3. Borrar un artículo \n4. Vaciar cesta \n5. Salir");
+
+                    switch (opcion) {
+                        case "1":
+                            this.cesta.verCesta();
+                            break;
+                        case "2":
+                            this.cesta.insertarArticulo();
+                            break;
+                        case "3":
+                            this.cesta.borrarArticulo();
+                            break;
+                        case "4":
+                            this.cesta.vaciarCesta();
+                            break;
+                        case "5":
+                            alert("Has finalizado el programa");
+                            break;
+                        default:
+                            alert("Opción no válida");
+                    }
+                }
             }
         }
+
+        // ejecución del menu
+        let menu = new Menu();
+        menu.mostrar();
     </script>
 </head>
 <body>
