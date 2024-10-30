@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
+        //clase articulo
         class Articulo {
             #cod;
             #nombre;
@@ -12,7 +13,9 @@
             constructor(cod, nombre, precio, cantidad) {
                 this.#cod = cod;
                 this.#nombre = nombre;
+                //pasa a decimal
                 this.#precio = parseFloat(precio);
+                //pasa a entero
                 this.#cantidad = parseInt(cantidad);
             }
 
@@ -21,6 +24,7 @@
             }
         }
 
+        //clase cesta
         class Cesta {
             constructor() {
                 this.articulos = [];
@@ -76,7 +80,7 @@
             }
         }
 
-        // Ejecución del programa principal directamente al cargar el script
+        //menu
         let cesta = new Cesta();
         let opcion;
 
