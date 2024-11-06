@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud de Baja de Vehículos</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h3>Solicitud de baja de vehículos.</h3>
+        <form>
+            <!-- Datos del vehículo -->
+            <div class="form-row">
+                <div class="col-md-4 mb-3">
+                    <label for="matricula">Matrícula</label>
+                    <input type="text" class="form-control" id="matricula" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="fechaMatriculacion">Fecha matriculación</label>
+                    <input type="date" class="form-control" id="fechaMatriculacion" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="numBastidor">6 últimos dígitos (Nº bastidor)</label>
+                    <input type="text" class="form-control" id="numBastidor" required>
+                </div>
+            </div>
+            
+            <!-- Datos del titular -->
+            <div class="form-row">
+                <div class="col-md-4 mb-3">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="apellidos">Apellidos</label>
+                    <input type="text" class="form-control" id="apellidos" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="domicilio">Domicilio</label>
+                    <input type="text" class="form-control" id="domicilio" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-md-4 mb-3">
+                    <label for="dni">DNI</label>
+                    <input type="text" class="form-control" id="dni" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" class="form-control" id="email" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" class="form-control" id="telefono" required>
+                </div>
+            </div>
+
+            <!-- Tipo de baja -->
+            <div class="form-group">
+                <label>Tipo de baja:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipoBaja" id="temporal" value="Temporal" required>
+                    <label class="form-check-label" for="temporal">Temporal</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipoBaja" id="definitiva" value="Definitiva" required>
+                    <label class="form-check-label" for="definitiva">Definitiva</label>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
