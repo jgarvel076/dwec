@@ -21,13 +21,13 @@
 <body>
     <div class="container mt-5">
         <h3>Solicitud de baja de vehículos.</h3>
-        <form method="get">
+        <form>
             <h5>Datos del vehiculo</h5>
-            <!-- datos del vehculo -->
+            <!-- Datos del vehículo -->
             <div class="form-row">
                 <div class="col-md-4 mb-3">
                     <label for="matricula">Matrícula</label>
-                    <input type="text" class="form-control" id="matricula" name="nombre" pattern="^[0-9]{4}[BCDFGHJKLMNPQRSTVWXYZ]{3}$" placeholder="0000AAA" required>
+                    <input type="text" class="form-control" id="matricula" pattern="^[0-9]{4}[BCDFGHJKLMNPQRSTVWXYZ]{3}$" placeholder="0000AAA" required>
                 </div>                
                 <div class="col-md-4 mb-3">
                     <label for="fechaMatriculacion">Fecha matriculación</label>
@@ -40,7 +40,7 @@
             </div>
             
             <h5>Datos del titular</h5>
-            <!-- datos del titular -->
+            <!-- Datos del titular -->
             <div class="form-row">
                 <div class="col-md-4 mb-3">
                     <label for="nombre">Nombre</label>
@@ -58,12 +58,12 @@
 
             <div class="form-row">
                 <div class="col-md-3 mb-3">
-                    <label for="dni" id="dniLabel">DNI</label>
+                    <label for="dni">DNI</label>
                     <input type="text" class="form-control" id="dni" pattern="^[0-9]{8}[A-Z]$" placeholder="00000000A" required>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="email">Correo electrónico</label>
-                    <input type="email" class="form-control" id="email" pattern="^[a-zA-Z]+[0-9]+@[a-zA-Z]+\.(com|es)$" placeholder="email@gmail.com" required>
+                    <input type="email" class="form-control" id="email" pattern="^[a-zA-Z]+@[a-zA-Z]+\.(com|es)$" placeholder="email@gmail.com" required>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="telefono">Teléfono</label>
@@ -87,7 +87,7 @@
     </div>
 
     <script>
-        // definicion de la clase vehiculo
+        // Definición de la clase Vehiculo
         class Vehiculo {
             constructor(matricula, fechaMatriculacion, ultNumBastidor) {
                 this.matricula = matricula;
@@ -95,7 +95,7 @@
                 this.ultNumBastidor = ultNumBastidor;
             }
 
-            // metodo para validar la matricula
+            // Método para validar la matrícula
             validateMatricula() {
                 if (this.matricula.validity.patternMismatch) {
                     this.matricula.setCustomValidity("La matrícula debe teener el formato 0000AAA con 4 numeros y 3 letras sin vocales");
@@ -105,14 +105,14 @@
             }
         }
 
-        // instancias de la clase vehiculo
+        // Instancia de la clase Vehiculo con los campos correspondientes
         let matriculaInput = document.getElementById('matricula');
         let fechaMatriculacionInput = document.getElementById('fechaMatriculacion');
         let ultNumBastidorInput = document.getElementById('ultNumBastidor');
 
         let vehiculo = new Vehiculo(matriculaInput, fechaMatriculacionInput, ultNumBastidorInput);
 
-        // asociar el método de validacion de la matrícula
+        // Asociar el método de validación de la matrícula a los eventos correspondientes
         matriculaInput.addEventListener('input', () => vehiculo.validateMatricula());
 
         class Propietario {
@@ -124,6 +124,34 @@
                 this.correo = correo;
                 this.telefono = telefono;
             }
+
+            // Método para validar el DNI
+            validateDNI() {
+                if (this.dni.validity.patternMismatch) {
+                    this.dni.setCustomValidity("El DNI debe tener 8 números seguidos de una letra.");
+                } else {
+                    this.dni.setCustomValidity(""); // Restablece el mensaje si el valor es válido
+                }
+            }
+
+            // Método para validar el correo electrónico
+            validateCorreo() {
+                if (this.correo.validity.patternMismatch) {
+                    this.correo.setCustomValidity("El correo debe ser de un formato válido (ejemplo@dominio.com).");
+                } else {
+                    this.correo.setCustomValidity(""); // Restablece el mensaje si el valor es válido
+                }
+            }
+
+            // Método para validar el teléfono
+            validateTelefono() {
+                if (this.telefono.validity.patternMismatch) {
+                    this.telefono.setCustomValidity("El teléfono debe tener 9 dígitos.");
+                } else {
+                    this.telefono.setCustomValidity(""); // Restablece el mensaje si el valor es válido
+                }
+            }
+
             // metodo para cambiar el texto de la etiqueta DNI cuando se recibe el foco
             cambiarTextoDni() {
                 const dniInput = document.getElementById('dni');
@@ -141,7 +169,7 @@
             }
         }
 
-        // instancias de la clase propietario
+        // Instancia de la clase Propietario con los campos correspondientes
         let nombreInput = document.getElementById('nombre');
         let apellidosInput = document.getElementById('apellidos');
         let domicilioInput = document.getElementById('domicilio');
@@ -151,6 +179,10 @@
 
         let propietario = new Propietario(nombreInput, apellidosInput, domicilioInput, dniInput, correoInput, telefonoInput);
 
+        // Asociar los métodos de validación de los campos de Propietario
+        dniInput.addEventListener('input', () => propietario.validateDNI());
+        correoInput.addEventListener('input', () => propietario.validateCorreo());
+        telefonoInput.addEventListener('input', () => propietario.validateTelefono());
         propietario.cambiarTextoDni();
     </script>
 
