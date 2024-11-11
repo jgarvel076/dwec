@@ -27,15 +27,15 @@
             <div class="form-row">
                 <div class="col-md-4 mb-3">
                     <label for="matricula">Matrícula</label>
-                    <input type="text" class="form-control" id="matricula" name="nombre" pattern="^[0-9]{4}[BCDFGHJKLMNPQRSTVWXYZ]{3}$" placeholder="0000AAA" required>
+                    <input type="text" class="form-control" id="matricula" name="matricula" pattern="^[0-9]{4}[BCDFGHJKLMNPQRSTVWXYZ]{3}$" placeholder="0000AAA" required>
                 </div>                
                 <div class="col-md-4 mb-3">
                     <label for="fechaMatriculacion">Fecha matriculación</label>
-                    <input type="date" class="form-control" id="fechaMatriculacion" required>
+                    <input type="date" class="form-control" id="fechaMatriculacion" name="fechaMatriculacion" required>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="ultNumBastidor">6 últimos dígitos (Nº bastidor)</label>
-                    <input type="text" class="form-control" id="ultNumBastidor" pattern="^[0-9]{6}$" placeholder="000000" required>
+                    <input type="text" class="form-control" id="ultNumBastidor" name="ultNumBastidor" pattern="^[0-9]{6}$" placeholder="000000" required>
                 </div>
             </div>
             
@@ -44,30 +44,30 @@
             <div class="form-row">
                 <div class="col-md-4 mb-3">
                     <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" required>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="apellidos">Apellidos</label>
-                    <input type="text" class="form-control" id="apellidos" required>
+                    <input type="text" class="form-control" id="apellidos" name="apellidos" required>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="domicilio">Domicilio</label>
-                    <input type="text" class="form-control" id="domicilio" required>
+                    <input type="text" class="form-control" id="domicilio" name="domicilio" required>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="col-md-3 mb-3">
                     <label for="dni" id="dniLabel">DNI</label>
-                    <input type="text" class="form-control" id="dni" pattern="^[0-9]{8}[A-Z]$" placeholder="00000000A" required>
+                    <input type="text" class="form-control" id="dni" name="dni" pattern="^[0-9]{8}[A-Z]$" placeholder="00000000A" required>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="email">Correo electrónico</label>
-                    <input type="email" class="form-control" id="email" pattern="^[a-zA-Z]+[0-9]+@[a-zA-Z]+\.(com|es)$" placeholder="email@gmail.com" required>
+                    <input type="email" class="form-control" id="email" name="email" pattern="^[a-zA-Z]+[0-9]+@[a-zA-Z]+\.(com|es)$" placeholder="email@gmail.com" required>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="telefono">Teléfono</label>
-                    <input type="tel" class="form-control" id="telefono" pattern="^[0-9]{9}$" placeholder="000000000" required>
+                    <input type="tel" class="form-control" id="telefono" name="telefono" pattern="^[0-9]{9}$" placeholder="000000000" required>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label>Tipo de baja:</label>
@@ -87,71 +87,51 @@
     </div>
 
     <script>
-        // definicion de la clase vehiculo
-        class Vehiculo {
-            constructor(matricula, fechaMatriculacion, ultNumBastidor) {
-                this.matricula = matricula;
-                this.fechaMatriculacion = fechaMatriculacion;
-                this.ultNumBastidor = ultNumBastidor;
-            }
-
-            // metodo para validar la matricula
-            validateMatricula() {
-                if (this.matricula.validity.patternMismatch) {
-                    this.matricula.setCustomValidity("La matrícula debe teener el formato 0000AAA con 4 numeros y 3 letras sin vocales");
-                } else {
-                    this.matricula.setCustomValidity(""); // Restablece el mensaje si el valor es valido
-                }
-            }
-        }
-
-        // instancias de la clase vehiculo
-        let matriculaInput = document.getElementById('matricula');
-        let fechaMatriculacionInput = document.getElementById('fechaMatriculacion');
-        let ultNumBastidorInput = document.getElementById('ultNumBastidor');
-
-        let vehiculo = new Vehiculo(matriculaInput, fechaMatriculacionInput, ultNumBastidorInput);
-
-        // asociar el método de validacion de la matrícula
-        matriculaInput.addEventListener('input', () => vehiculo.validateMatricula());
-
+        // definicion de la clase Propietario
         class Propietario {
-            constructor(nombre, apellidos, domicilio, dni, correo, telefono) {
-                this.nombre = nombre;
-                this.apellidos = apellidos;
-                this.domicilio = domicilio;
-                this.dni = dni;
-                this.correo = correo;
-                this.telefono = telefono;
+            constructor() {
+                this.configurarDniLabel();
             }
-            // metodo para cambiar el texto de la etiqueta DNI cuando se recibe el foco
-            cambiarTextoDni() {
-                const dniInput = document.getElementById('dni');
-                const dniLabel = document.getElementById('dniLabel');
-                
-                // cambiar el texto cuando el campo recibe el foco
-                dniInput.addEventListener('focus', function () {
+
+            configurarDniLabel() {
+                let dniInput = document.getElementById('dni');
+                let dniLabel = document.getElementById('dniLabel');
+
+                dniInput.addEventListener('focus', () => {
                     dniLabel.textContent = 'Editando DNI...';
                 });
 
-                // volver al texto original cuando el campo pierde el foco
-                dniInput.addEventListener('blur', function () {
+                dniInput.addEventListener('blur', () => {
                     dniLabel.textContent = 'DNI';
                 });
             }
         }
 
-        // instancias de la clase propietario
-        let nombreInput = document.getElementById('nombre');
-        let apellidosInput = document.getElementById('apellidos');
-        let domicilioInput = document.getElementById('domicilio');
-        let dniInput = document.getElementById('dni');
-        let correoInput = document.getElementById('email');
-        let telefonoInput = document.getElementById('telefono');
+        // instancia de la clase Propietario y configurar el dni
+        new Propietario();
 
-        let propietario = new Propietario(nombreInput, apellidosInput, domicilioInput, dniInput, correoInput, telefonoInput);
+        // definicion de la clase Vehiculo
+        class Vehiculo {
+            constructor() {
+                this.configurarValidacionMatricula();
+            }
 
-        propietario.cambiarTextoDni();
+            configurarValidacionMatricula() {
+                let matriculaInput = document.getElementById('matricula');
+                matriculaInput.addEventListener('input', () => this.validateMatricula(matriculaInput));
+            }
+
+            validateMatricula(matriculaInput) {
+                if (matriculaInput.validity.patternMismatch) {
+                    matriculaInput.setCustomValidity("La matrícula debe seguir el formato 0000AAA, con 4 números y 3 letras sin vocales.");
+                } else {
+                    matriculaInput.setCustomValidity(""); // Restablece el mensaje si el valor es válido
+                }
+            }
+        }
+
+        //instancia de la clase Vehiculo y configurar la validación de matrícula
+        new Vehiculo();
     </script>
 
 </body>
