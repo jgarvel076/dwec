@@ -36,20 +36,20 @@
 
     <script>
         class User {
-            // Array privado con los usuarios y contraseñas válidos
+            // array con los usuarios y contraseñas
             #users = [
                 { usuario: 'juan.perez', contraseña: 'Aventura2024' },
                 { usuario: 'carla.gomez', contraseña: 'Mariposa9' },
                 { usuario: 'roberto.fernandez', contraseña: 'CieloAzul1' }
             ];
 
-            // Método para validar el patrón de la contraseña
+            // validar el patrón de la contraseña
             validarContraseña(contraseña) {
                 let patron = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
                 return patron.test(contraseña);
             }
 
-            // Método para verificar si el usuario y contraseña coinciden
+            // verificar si el usuario y contraseña coinciden
             validarCredenciales(usuario, contraseña) {
                 return this.#users.some(u => u.usuario === usuario && u.contraseña === contraseña);
             }
@@ -57,20 +57,20 @@
 
         let user = new User();
 
-        // Evento para manejar el formulario de inicio de sesión
+        // evento de inicio de sesión
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevenir el envío del formulario
 
             let usuario = document.getElementById('usuario').value;
             let contraseña = document.getElementById('contraseña').value;
 
-            // Validar el patrón de la contraseña
+            // validar la contraseña
             if (!user.validarContraseña(contraseña)) {
                 alert('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.');
                 return;
             }
 
-            // Validar credenciales
+            // validar credenciales
             if (user.validarCredenciales(usuario, contraseña)) {
                 alert('Se ha iniciado sesión');
                 // Aquí podrías enviar el formulario si fuera necesario
