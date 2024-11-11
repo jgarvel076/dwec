@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<!--Estilo de las casillas-->
+<style>
+    input:required:invalid {
+        border: 2px solid red;
+    }
+
+    input:required:valid {
+        border: 2px solid green;
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud de Baja de Vehículos</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h3>Solicitud de baja de vehículos.</h3>
+        <form method="get">
+            <h5>Datos del vehiculo</h5>
+            <!-- datos del vehculo -->
+            <div class="form-row">
+                <div class="col-md-4 mb-3">
+                    <label for="matricula">Matrícula</label>
+                    <input type="text" class="form-control" id="matricula" name="matricula" pattern="^[0-9]{4}[BCDFGHJKLMNPQRSTVWXYZ]{3}$" placeholder="0000AAA" required>
+                </div>                
+                <div class="col-md-4 mb-3">
+                    <label for="fechaMatriculacion">Fecha matriculación</label>
+                    <input type="date" class="form-control" id="fechaMatriculacion" name="fechaMatriculacion" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="ultNumBastidor">6 últimos dígitos (Nº bastidor)</label>
+                    <input type="text" class="form-control" id="ultNumBastidor" name="ultNumBastidor" pattern="^[0-9]{6}$" placeholder="000000" required>
+                </div>
+            </div>
+            
+            <h5>Datos del titular</h5>
+            <!-- datos del titular -->
+            <div class="form-row">
+                <div class="col-md-4 mb-3">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="apellidos">Apellidos</label>
+                    <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="domicilio">Domicilio</label>
+                    <input type="text" class="form-control" id="domicilio" name="domicilio" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-md-3 mb-3">
+                    <label for="dni" id="dniLabel">DNI</label>
+                    <input type="text" class="form-control" id="dni" name="dni" pattern="^[0-9]{8}[A-Z]$" placeholder="00000000A" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" class="form-control" id="email" name="email" pattern="^[a-zA-Z]+[0-9]+@[a-zA-Z]+\.(com|es)$" placeholder="email@gmail.com" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" class="form-control" id="telefono" name="telefono" pattern="^[0-9]{9}$" placeholder="000000000" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label>Tipo de baja:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipoBaja" id="temporal" value="Temporal" required>
+                    <label class="form-check-label" for="temporal">Temporal</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipoBaja" id="definitiva" value="Definitiva" required>
+                    <label class="form-check-label" for="definitiva">Definitiva</label>
+                </div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        class Propietario {
+            constructor() {
+                this.configurarDniLabel();
+                this.configurarValidaciones();
+            }
+
+            configurarDniLabel() {
+                let dniInput = document.getElementById('dni');
+                let dniLabel = document.getElementById('dniLabel');
+
+                dniInput.addEventListener('focus', () => {
+                    dniLabel.textContent = 'Editando DNI...';
+                });
+
+                dniInput.addEventListener('blur', () => {
+                    dniLabel.textContent = 'DNI';
+                });
+            }
+
+            configurarValidaciones() {
+                let dniInput = document.getElementById('dni');
+                let correoInput = document.getElementById('email');
+                let telefonoInput = document.getElementById('telefono');
+
+                dniInput.addEventListener('input', () => this.validateDNI(dniInput));
+                correoInput.addEventListener('input', () => this.validateCorreo(correoInput));
+                telefonoInput.addEventListener('input', () => this.validateTelefono(telefonoInput));
+            }
+
+            validateDNI(dniInput) {
+                if (dniInput.validity.patternMismatch) {
+                    dniInput.setCustomValidity("El DNI debe tener 8 números seguidos de una letra.");
+                } else {
+                    dniInput.setCustomValidity("");
+                }
+            }
+
+            validateCorreo(correoInput) {
+                if (correoInput.validity.patternMismatch) {
+                    correoInput.setCustomValidity("El correo debe ser de un formato válido (ejemplo@dominio.com).");
+                } else {
+                    correoInput.setCustomValidity("");
+                }
+            }
+
+            validateTelefono(telefonoInput) {
+                if (telefonoInput.validity.patternMismatch) {
+                    telefonoInput.setCustomValidity("El teléfono debe tener 9 dígitos.");
+                } else {
+                    telefonoInput.setCustomValidity("");
+                }
+            }
+        }
+
+        new Propietario();
+
+        class Vehiculo {
+            constructor() {
+                this.configurarValidacionMatricula();
+            }
+
+            configurarValidacionMatricula() {
+                let matriculaInput = document.getElementById('matricula');
+                matriculaInput.addEventListener('input', () => this.validateMatricula(matriculaInput));
+            }
+
+            validateMatricula(matriculaInput) {
+                if (matriculaInput.validity.patternMismatch) {
+                    matriculaInput.setCustomValidity("La matrícula debe seguir el formato 0000AAA, con 4 números y 3 letras sin vocales.");
+                } else {
+                    matriculaInput.setCustomValidity("");
+                }
+            }
+        }
+
+        new Vehiculo();
+    </script>
+
+</body>
+</html>
