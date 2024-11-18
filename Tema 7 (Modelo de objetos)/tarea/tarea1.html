@@ -9,26 +9,25 @@
 <body>
     <div class="container mt-4">
         <h1><img src="https://cdn.pixabay.com/photo/2015/12/11/11/43/google-1088004_1280.png" height="30px" width="30px"> De Todo ...</h1>
-        <h4>Ejemplo de calculo de cesta o carrito de la compra ...</h4>
+        <h4>Ejemplo de cálculo de cesta o carrito de la compra ...</h4>
 
         <div class="row">
             <div class="col-md-8">
-                <div id="productosD" class="row"></div>
+                <div id="contProductos" class="row"></div> <!-- Contenedor para los productos -->
             </div>
             <div class="col-md-4">
                 <h3>Cesta</h3>
-                <table class="table" id="tablaCesta">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Cod.</th>
                             <th>Nombre</th>
                             <th>Cant.</th>
-                            <th>Precio</th>
                             <th>Subtotal</th>
                             <th>Eliminar</th>
                         </tr>
                     </thead>
-                    <tbody id="cuerpoTablaCesta"></tbody>
+                    <tbody id="cesta"></tbody> <!-- Contenedor para los productos de la cesta -->
                 </table>
                 <p id="total">Total: 0.00 €</p>
                 <p id="totalIVA">Total + IVA (21%): 0.00 €</p>
@@ -43,37 +42,111 @@
                 this.nombre = nombre;
                 this.precio = precio;
                 this.imagen = imagen;
-                this.cantidad = 1;
+            }
+        }
+
+        class ContProductos {
+            #productosDisponibles = [];
+
+            constructor(productosArray) {
+                this.#productosDisponibles = productosArray.map(
+                    ([codigo, nombre, precio, imagen]) => new Producto(codigo, nombre, precio, imagen)
+                );
+            }
+
+            obtenerProductoPorCodigo(codigo) {
+                return this.#productosDisponibles.find(producto => producto.codigo === codigo);
+            }
+
+            renderizar() {
+                const contenedor = document.getElementById('contProductos');
+                contenedor.innerHTML = ''; // Limpiar el contenedor antes de renderizar
+                this.#productosDisponibles.forEach(producto => {
+                    const card = document.createElement('div');
+                    card.className = 'col-md-4 mb-3';
+
+                    const divCard = document.createElement('div');
+                    divCard.className = 'card';
+
+                    const img = document.createElement('img');
+                    img.src = producto.imagen;
+                    img.className = 'card-img-top';
+                    img.alt = producto.nombre;
+
+                    const body = document.createElement('div');
+                    body.className = 'card-body';
+
+                    const title = document.createElement('h5');
+                    title.className = 'card-title';
+                    title.textContent = producto.nombre;
+
+                    const price = document.createElement('p');
+                    price.className = 'card-text';
+                    price.textContent = `Precio: ${producto.precio.toFixed(2)} €`;
+
+                    const inputCantidad = document.createElement('input');
+                    inputCantidad.type = 'number';
+                    inputCantidad.value = 1;
+                    inputCantidad.min = 1;
+                    inputCantidad.className = 'form-control mb-2';
+                    inputCantidad.id = `cantidad-${producto.codigo}`;
+
+                    const button = document.createElement('button');
+                    button.className = 'btn btn-primary';
+                    button.textContent = 'Añadir';
+                    button.onclick = () => {
+                        const cantidad = parseInt(document.getElementById(`cantidad-${producto.codigo}`).value);
+                        if (cantidad > 0) {
+                            app.cesta.añadirProducto(producto, cantidad);
+                        }
+                    };
+
+                    body.append(title, price, inputCantidad, button);
+                    divCard.append(img, body);
+                    card.appendChild(divCard);
+                    contenedor.appendChild(card);
+                });
             }
         }
 
         class Cesta {
-            constructor() {
-                this.productos = this.cargarDesdeLocalStorage() || [];
-                this.actualizarCesta();
-            }
+            #productosCesta = [];
 
-            añadirProducto(producto) {
-                const productoExistente = this.productos.find(p => p.codigo === producto.codigo);
-                if (productoExistente) {
-                    productoExistente.cantidad++;
+            añadirProducto(producto, cantidad) {
+                const existente = this.#productosCesta.find(p => p.id === producto.codigo);
+                if (existente) {
+                    existente.cantidad += cantidad;
                 } else {
-                    this.productos.push(producto);
+                    this.#productosCesta.push({ id: producto.codigo, cantidad });
                 }
-                this.guardarEnLocalStorage();
                 this.actualizarCesta();
             }
 
-            eliminarProducto(codigo) {
-                this.productos = this.productos.filter(p => p.codigo !== codigo);
-                this.guardarEnLocalStorage();
+            eliminarProducto(id) {
+                this.#productosCesta = this.#productosCesta.filter(p => p.id !== id);
                 this.actualizarCesta();
             }
 
             calcularTotales() {
                 let total = 0;
-                this.productos.forEach(producto => {
-                    total += producto.precio * producto.cantidad;
+                const contenedor = document.getElementById('cesta');
+                contenedor.innerHTML = '';
+                this.#productosCesta.forEach(({ id, cantidad }) => {
+                    const producto = app.contProductos.obtenerProductoPorCodigo(id);
+                    if (producto) {
+                        const subtotal = producto.precio * cantidad;
+                        total += subtotal;
+
+                        const fila = document.createElement('tr');
+                        fila.innerHTML = `
+                            <td>${id}</td>
+                            <td>${producto.nombre}</td>
+                            <td>${cantidad}</td>
+                            <td>${subtotal.toFixed(2)} €</td>
+                            <td><button class="btn btn-danger btn-sm" onclick="app.cesta.eliminarProducto('${id}')">Eliminar</button></td>
+                        `;
+                        contenedor.appendChild(fila);
+                    }
                 });
                 const totalIVA = total * 1.21;
                 document.getElementById('total').textContent = `Total: ${total.toFixed(2)} €`;
@@ -81,63 +154,25 @@
             }
 
             actualizarCesta() {
-                const cuerpoTabla = document.getElementById('cuerpoTablaCesta');
-                cuerpoTabla.innerHTML = '';
-                this.productos.forEach(producto => {
-                    const fila = document.createElement('tr');
-                    fila.innerHTML = `
-                        <td>${producto.codigo}</td>
-                        <td>${producto.nombre}</td>
-                        <td>${producto.cantidad}</td>
-                        <td>${producto.precio.toFixed(2)} €</td>
-                        <td>${(producto.precio * producto.cantidad).toFixed(2)} €</td>
-                        <td><button class="btn btn-danger btn-sm" onclick="app.cesta.eliminarProducto('${producto.codigo}')">Eliminar</button></td>
-                    `;
-                    cuerpoTabla.appendChild(fila);
-                });
                 this.calcularTotales();
-            }
-
-            guardarEnLocalStorage() {
-                localStorage.setItem('cesta', JSON.stringify(this.productos));
-            }
-
-            cargarDesdeLocalStorage() {
-                return JSON.parse(localStorage.getItem('cesta'));
             }
         }
 
         class App {
             constructor() {
-                this.productosDisponibles = [
+                const productosArray = [
                     ['001', 'Bolso', 20, 'https://cdn.pixabay.com/photo/2013/07/12/17/39/handbag-152158_1280.png'],
                     ['002', 'Móvil', 120, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_1280.png'],
                     ['003', 'Taza', 10, 'https://cdn.pixabay.com/photo/2012/04/13/00/57/coffee-31491_1280.png'],
                     ['004', 'Zapatos', 50, 'https://cdn.pixabay.com/photo/2023/05/03/22/43/tennis-7968714_1280.png'],
                     ['005', 'Vestido', 30, 'https://cdn.pixabay.com/photo/2013/07/12/15/40/gown-150290_1280.png'],
-                    ['006', 'Cámara', 100, 'https://cdn.pixabay.com/photo/2012/04/13/17/00/camera-32871_1280.png']
+                    ['006', 'Cámara', 100, 'https://cdn.pixabay.com/photo/2012/04/13/17/00/camera-32871_1280.png'],
+                    ['007', 'Cámara', 100, 'https://cdn.pixabay.com/photo/2012/04/13/17/00/camera-32871_1280.png']
                 ];
-                this.cesta = new Cesta();
-                this.inicializar();
-            }
 
-            inicializar() {
-                const contenedorProductos = document.getElementById('productos');
-                this.productosDisponibles.forEach(producto => {
-                    const card = document.createElement('div');
-                    card.className = 'col-md-4 mb-3';
-                    card.innerHTML = `
-                        <div class="card">
-                            <img src="${producto.imagen}" class="card-img-top" alt="${producto.nombre}">
-                            <div class="card-body">
-                                <h5 class="card-title">${producto.nombre}</h5>
-                                <p class="card-text">Precio: ${producto.precio.toFixed(2)} €</p>
-                                <button class="btn btn-primary" onclick="app.cesta.añadirProducto(new Producto('${producto.codigo}', '${producto.nombre}', ${producto.precio}, '${producto.imagen}'))">Añadir</button>
-                            </div>
-                        </div>
-                    `;
-                    contenedorProductos.appendChild(card);
-                });
+                this.contProductos = new ContProductos(productosArray);
+                this.cesta = new Cesta();
+                this.contProductos.renderizar();
             }
         }
 
