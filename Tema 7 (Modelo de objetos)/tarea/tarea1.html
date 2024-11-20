@@ -59,43 +59,43 @@
             }
 
             renderizar() {
-                const contenedor = document.getElementById('contProductos');
+                let contenedor = document.getElementById('contProductos');
                 contenedor.innerHTML = ''; // Limpiar el contenedor antes de renderizar
                 this.#productosDisponibles.forEach(producto => {
-                    const card = document.createElement('div');
+                    let card = document.createElement('div');
                     card.className = 'col-md-4 mb-3';
 
-                    const divCard = document.createElement('div');
+                    let divCard = document.createElement('div');
                     divCard.className = 'card';
 
-                    const img = document.createElement('img');
+                    let img = document.createElement('img');
                     img.src = producto.imagen;
                     img.className = 'card-img-top';
                     img.alt = producto.nombre;
 
-                    const body = document.createElement('div');
+                    let body = document.createElement('div');
                     body.className = 'card-body';
 
-                    const title = document.createElement('h5');
+                    let title = document.createElement('h5');
                     title.className = 'card-title';
                     title.textContent = producto.nombre;
 
-                    const price = document.createElement('p');
+                    let price = document.createElement('p');
                     price.className = 'card-text';
                     price.textContent = `Precio: ${producto.precio.toFixed(2)} €`;
 
-                    const inputCantidad = document.createElement('input');
+                    let inputCantidad = document.createElement('input');
                     inputCantidad.type = 'number';
                     inputCantidad.value = 1;
                     inputCantidad.min = 1;
                     inputCantidad.className = 'form-control mb-2';
                     inputCantidad.id = `cantidad-${producto.codigo}`;
 
-                    const button = document.createElement('button');
+                    let button = document.createElement('button');
                     button.className = 'btn btn-primary';
                     button.textContent = 'Añadir';
                     button.onclick = () => {
-                        const cantidad = parseInt(document.getElementById(`cantidad-${producto.codigo}`).value);
+                        let cantidad = parseInt(document.getElementById(`cantidad-${producto.codigo}`).value);
                         if (cantidad > 0) {
                             app.cesta.añadirProducto(producto, cantidad);
                         }
@@ -113,7 +113,7 @@
             #productosCesta = [];
 
             añadirProducto(producto, cantidad) {
-                const existente = this.#productosCesta.find(p => p.id === producto.codigo);
+                let existente = this.#productosCesta.find(p => p.id === producto.codigo);
                 if (existente) {
                     existente.cantidad += cantidad;
                 } else {
@@ -129,15 +129,15 @@
 
             calcularTotales() {
                 let total = 0;
-                const contenedor = document.getElementById('cesta');
+                let contenedor = document.getElementById('cesta');
                 contenedor.innerHTML = '';
                 this.#productosCesta.forEach(({ id, cantidad }) => {
-                    const producto = app.contProductos.obtenerProductoPorCodigo(id);
+                    let producto = app.contProductos.obtenerProductoPorCodigo(id);
                     if (producto) {
-                        const subtotal = producto.precio * cantidad;
+                        let subtotal = producto.precio * cantidad;
                         total += subtotal;
 
-                        const fila = document.createElement('tr');
+                        let fila = document.createElement('tr');
                         fila.innerHTML = `
                             <td>${id}</td>
                             <td>${producto.nombre}</td>
@@ -148,7 +148,7 @@
                         contenedor.appendChild(fila);
                     }
                 });
-                const totalIVA = total * 1.21;
+                let totalIVA = total * 1.21;
                 document.getElementById('total').textContent = `Total: ${total.toFixed(2)} €`;
                 document.getElementById('totalIVA').textContent = `Total + IVA (21%): ${totalIVA.toFixed(2)} €`;
             }
@@ -160,7 +160,7 @@
 
         class App {
             constructor() {
-                const productosArray = [
+                let productosArray = [
                     ['001', 'Bolso', 20, 'https://cdn.pixabay.com/photo/2013/07/12/17/39/handbag-152158_1280.png'],
                     ['002', 'Móvil', 120, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_1280.png'],
                     ['003', 'Taza', 10, 'https://cdn.pixabay.com/photo/2012/04/13/00/57/coffee-31491_1280.png'],
@@ -176,7 +176,7 @@
             }
         }
 
-        const app = new App();
+        let app = new App();
     </script>
 </body>
 </html>
