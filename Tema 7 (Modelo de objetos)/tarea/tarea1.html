@@ -48,12 +48,14 @@
         class ContProductos {
             #productosDisponibles = [];
 
+            //convertimos el array plano en productos
             constructor(productosArray) {
                 this.#productosDisponibles = productosArray.map(
                     ([codigo, nombre, precio, imagen]) => new Producto(codigo, nombre, precio, imagen)
                 );
             }
 
+            //obtenemos el codigo del producto
             obtenerProductoPorCodigo(codigo) {
                 return this.#productosDisponibles.find(producto => producto.codigo === codigo);
             }
