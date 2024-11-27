@@ -143,11 +143,11 @@
                 this.actualizarCesta();
             }
 
-                //calcular cesta
-                calcularTotales() {
-                let total = 0;
-                let contenedor = document.getElementById('cesta');
-                contenedor.innerHTML = ''; // Limpia la tabla antes de renderizar
+            //calcular cesta
+            calcularTotales() {
+            let total = 0;
+            let contenedor = document.getElementById('cesta');
+            contenedor.innerHTML = ''; // Limpia la tabla antes de renderizar
 
                 this.#productosCesta.forEach(({ id, cantidad }) => {
                     let producto = app.contProductos.obtenerProductoPorCodigo(id);
