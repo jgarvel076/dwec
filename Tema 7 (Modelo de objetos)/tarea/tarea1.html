@@ -147,47 +147,47 @@
             calcularTotales() {
             let total = 0;
             let contenedor = document.getElementById('cesta');
-            contenedor.innerHTML = ''; // Limpia la tabla antes de renderizar
+            contenedor.innerHTML = ''; //limpia la tabla antes de renderizar
 
-                this.#productosCesta.forEach(({ id, cantidad }) => {
-                    let producto = app.contProductos.obtenerProductoPorCodigo(id);
-                    if (producto) {
-                        let subtotal = producto.precio * cantidad;
-                        total += subtotal;
+            this.#productosCesta.forEach(({ id, cantidad }) => {
+                let producto = app.contProductos.obtenerProductoPorCodigo(id);
+                if (producto) {
+                    let subtotal = producto.precio * cantidad;
+                    total += subtotal;
 
-                        //crear una nueva fila para la tabla
-                        let fila = document.createElement('tr');
+                    //crear una nueva fila para la tabla
+                    let fila = document.createElement('tr');
 
-                        //crear celdas para los datos del producto
-                        let celdaId = document.createElement('td');
-                        celdaId.textContent = id;
+                    //crear celdas para los datos del producto
+                    let celdaId = document.createElement('td');
+                    celdaId.textContent = id;
 
-                        let celdaNombre = document.createElement('td');
-                        celdaNombre.textContent = producto.nombre;
+                    let celdaNombre = document.createElement('td');
+                    celdaNombre.textContent = producto.nombre;
 
-                        let celdaCantidad = document.createElement('td');
-                        celdaCantidad.textContent = cantidad;
+                    let celdaCantidad = document.createElement('td');
+                    celdaCantidad.textContent = cantidad;
 
-                        let celdaSubtotal = document.createElement('td');
-                        celdaSubtotal.textContent = `${subtotal.toFixed(2)} €`;
+                    let celdaSubtotal = document.createElement('td');
+                    celdaSubtotal.textContent = `${subtotal.toFixed(2)} €`;
 
-                        let celdaEliminar = document.createElement('td');
-                        let botonEliminar = document.createElement('button');
-                        botonEliminar.className = 'btn btn-danger btn-sm';
-                        botonEliminar.textContent = 'Eliminar';
+                    let celdaEliminar = document.createElement('td');
+                    let botonEliminar = document.createElement('button');
+                    botonEliminar.className = 'btn btn-danger btn-sm';
+                    botonEliminar.textContent = 'Eliminar';
 
-                        //agregar evento de eliminación con addEventListener
-                        botonEliminar.addEventListener('click', () => {
-                            app.cesta.eliminarProducto(id);
-                        });
+                    //agregar evento de eliminación con addEventListener
+                    botonEliminar.addEventListener('click', () => {
+                        app.cesta.eliminarProducto(id);
+                    });
 
-                        celdaEliminar.appendChild(botonEliminar);
+                     celdaEliminar.appendChild(botonEliminar);
 
-                        //añadir celdas a la fila
-                        fila.append(celdaId, celdaNombre, celdaCantidad, celdaSubtotal, celdaEliminar);
+                    //añadir celdas a la fila
+                    fila.append(celdaId, celdaNombre, celdaCantidad, celdaSubtotal, celdaEliminar);
 
-                        //añadir la fila al contenedor
-                        contenedor.appendChild(fila);
+                    //añadir la fila al contenedor
+                    contenedor.appendChild(fila);
                     }
                 });
                 let totalIVA = total * 1.21;
