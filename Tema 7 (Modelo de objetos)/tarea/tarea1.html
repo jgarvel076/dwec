@@ -144,7 +144,7 @@
             }
 
             //calcular cesta
-            calcularTotales() {
+            rendedrizarCesta() {
             let total = 0;
             let contenedor = document.getElementById('cesta');
             contenedor.innerHTML = ''; //limpia la tabla antes de renderizar
@@ -197,7 +197,7 @@
 
             //actualizar cesta
             actualizarCesta() {
-                this.calcularTotales();
+                this.rendedrizarCesta();
             }
         }
 
