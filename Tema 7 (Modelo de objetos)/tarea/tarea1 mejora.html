@@ -143,61 +143,52 @@
                 this.actualizarCesta();
             }
 
-                //calcular cesta
-                calcularTotales() {
+            //renderizamos cesta
+            renderCesta() {
+            let contenedor = document.getElementById('cesta');
+            contenedor.innerHTML = ''; // Limpiar el contenedor antes de renderizar
+
+            this.#productosCesta.forEach(({ id, cantidad }) => {
+                let producto = app.contProductos.obtenerProductoPorCodigo(id);
+                if (producto) {
+                    let subtotal = producto.precio * cantidad;
+
+                    //crear una fila usando la clase Fila
+                    let fila = new Fila(
+                        id,
+                        producto.nombre,
+                        cantidad,
+                        subtotal,
+                        (productoId) => this.eliminarProducto(productoId)
+                    );
+
+                    //añadir la fila al contenedor
+                    contenedor.appendChild(fila.crearElemento());
+                }
+            });
+            
+            //calcular totales
+            calcularTotales() {
                 let total = 0;
-                let contenedor = document.getElementById('cesta');
-                contenedor.innerHTML = ''; // Limpia la tabla antes de renderizar
 
                 this.#productosCesta.forEach(({ id, cantidad }) => {
                     let producto = app.contProductos.obtenerProductoPorCodigo(id);
                     if (producto) {
-                        let subtotal = producto.precio * cantidad;
-                        total += subtotal;
-
-                        //crear una nueva fila para la tabla
-                        let fila = document.createElement('tr');
-
-                        //crear celdas para los datos del producto
-                        let celdaId = document.createElement('td');
-                        celdaId.textContent = id;
-
-                        let celdaNombre = document.createElement('td');
-                        celdaNombre.textContent = producto.nombre;
-
-                        let celdaCantidad = document.createElement('td');
-                        celdaCantidad.textContent = cantidad;
-
-                        let celdaSubtotal = document.createElement('td');
-                        celdaSubtotal.textContent = `${subtotal.toFixed(2)} €`;
-
-                        let celdaEliminar = document.createElement('td');
-                        let botonEliminar = document.createElement('button');
-                        botonEliminar.className = 'btn btn-danger btn-sm';
-                        botonEliminar.textContent = 'Eliminar';
-
-                        //agregar evento de eliminación con addEventListener
-                        botonEliminar.addEventListener('click', () => {
-                            app.cesta.eliminarProducto(id);
-                        });
-
-                        celdaEliminar.appendChild(botonEliminar);
-
-                        //añadir celdas a la fila
-                        fila.append(celdaId, celdaNombre, celdaCantidad, celdaSubtotal, celdaEliminar);
-
-                        //añadir la fila al contenedor
-                        contenedor.appendChild(fila);
+                        total += producto.precio * cantidad;
                     }
                 });
+
+                //calcular el total con IVA
                 let totalIVA = total * 1.21;
                 document.getElementById('total').textContent = `Total: ${total.toFixed(2)} €`;
                 document.getElementById('totalIVA').textContent = `Total + IVA (21%): ${totalIVA.toFixed(2)} €`;
             }
 
-            //actualizar cesta
-            actualizarCesta() {
-                this.calcularTotales();
+
+                //actualizar cesta
+                actualizarCesta() {
+                    this.calcularTotales();
+                }
             }
         }
 
@@ -218,6 +209,50 @@
                 this.contProductos.renderizar();
             }
         }
+
+        class Fila {
+        constructor(id, nombre, cantidad, subtotal, eliminarCallback) {
+            this.id = id;
+            this.nombre = nombre;
+            this.cantidad = cantidad;
+            this.subtotal = subtotal;
+            this.eliminarCallback = eliminarCallback; // Función a llamar cuando se elimine
+        }
+
+        crearElemento() {
+            // Crear la fila del producto
+            let fila = document.createElement('tr');
+
+            // Crear celdas
+            let celdaId = document.createElement('td');
+            celdaId.textContent = this.id;
+
+            let celdaNombre = document.createElement('td');
+            celdaNombre.textContent = this.nombre;
+
+            let celdaCantidad = document.createElement('td');
+            celdaCantidad.textContent = this.cantidad;
+
+            let celdaSubtotal = document.createElement('td');
+            celdaSubtotal.textContent = `${this.subtotal.toFixed(2)} €`;
+
+            let celdaEliminar = document.createElement('td');
+            let botonEliminar = document.createElement('button');
+            botonEliminar.className = 'btn btn-danger btn-sm';
+            botonEliminar.textContent = 'Eliminar';
+
+            // Asociar el evento de eliminación
+            botonEliminar.addEventListener('click', () => this.eliminarCallback(this.id));
+
+            celdaEliminar.appendChild(botonEliminar);
+
+            // Añadir celdas a la fila
+            fila.append(celdaId, celdaNombre, celdaCantidad, celdaSubtotal, celdaEliminar);
+
+            return fila;
+        }
+    }
+
 
         let app = new App();
     </script>
