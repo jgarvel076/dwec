@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cesta de la Compra</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1><img src="https://cdn.pixabay.com/photo/2015/12/11/11/43/google-1088004_1280.png" height="30px" width="30px"> De Todo ...</h1>
+        <h4>Ejemplo de cálculo de cesta o carrito de la compra ...</h4>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div id="contProductos" class="row"></div> <!-- Contenedor para los productos -->
+            </div>
+            <div class="col-md-4">
+                <h3>Cesta</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Cod.</th>
+                            <th>Nombre</th>
+                            <th>Cant.</th>
+                            <th>Subtotal</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cesta"></tbody> <!-- Contenedor para los productos de la cesta -->
+                </table>
+                <p id="total">Total: 0.00 €</p>
+                <p id="totalIVA">Total + IVA (21%): 0.00 €</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Producto {
+            constructor(codigo, nombre, precio, imagen) {
+                this.codigo = codigo;
+                this.nombre = nombre;
+                this.precio = precio;
+                this.imagen = imagen;
+            }
+        }
+
+        class ContProductos {
+            #productosDisponibles = [];
+
+            //convertimos el array plano en productos
+            constructor(productosArray) {
+                this.#productosDisponibles = productosArray.map(
+                    ([codigo, nombre, precio, imagen]) => new Producto(codigo, nombre, precio, imagen)
+                );
+            }
+
+            //obtenemos el codigo del producto
+            obtenerProductoPorCodigo(codigo) {
+                return this.#productosDisponibles.find(producto => producto.codigo === codigo);
+            }
+
+            renderizar() {
+                let contenedor = document.getElementById('contProductos');
+                contenedor.innerHTML = ''; //limpia el contenedor antes de renderizar
+                this.#productosDisponibles.forEach(producto => {
+                    let card = document.createElement('div');
+                    card.className = 'col-md-4 mb-3';
+
+                    //creamos un div
+                    let divCard = document.createElement('div');
+                    divCard.className = 'card';
+
+                    //creamos una imagen
+                    let img = document.createElement('img');
+                    img.src = producto.imagen;
+                    img.className = 'card-img-top';
+                    img.alt = producto.nombre;
+
+                    //creamos el body
+                    let body = document.createElement('div');
+                    body.className = 'card-body';
+
+                    //creamos el title
+                    let title = document.createElement('h5');
+                    title.className = 'card-title';
+                    title.textContent = producto.nombre;
+
+                    //creamos el precio
+                    let price = document.createElement('p');
+                    price.className = 'card-text';
+                    price.textContent = `Precio: ${producto.precio.toFixed(2)} €`;
+
+                    //creamos el input de cantidad
+                    let inputCantidad = document.createElement('input');
+                    inputCantidad.type = 'number';
+                    inputCantidad.value = 1;
+                    inputCantidad.min = 1;
+                    inputCantidad.className = 'form-control mb-2';
+                    inputCantidad.id = `cantidad-${producto.codigo}`;
+
+                    //creamos el boton añadir
+                    let button = document.createElement('button');
+                    button.className = 'btn btn-primary';
+                    button.textContent = 'Añadir';
+
+                    //agregamos el evento click con addEventListener
+                    button.addEventListener('click', () => {
+                        let cantidad = parseInt(document.getElementById(`cantidad-${producto.codigo}`).value);
+                        //cantidad mayor que 0
+                        if (cantidad > 0) {
+                            app.cesta.añadirProducto(producto, cantidad);
+                        }
+                    });
+
+                    body.append(title, price, inputCantidad, button);
+                    divCard.append(img, body);
+                    card.appendChild(divCard);
+                    contenedor.appendChild(card);
+                });
+            }
+        }
+
+        class Cesta {
+            #productosCesta = [];
+            constructor(){
+                this.recuperarEstadoCesta();
+            }
+            //añadir producto
+            añadirProducto(producto, cantidad) {
+                //debe ponerse p (no poner producto porque hay conflictos)
+                let existente = this.#productosCesta.find(p=> p.id === producto.codigo);
+                if (existente) {
+                    existente.cantidad += cantidad;
+                } else {
+                    this.#productosCesta.push({ id: producto.codigo, cantidad });
+                }
+                this.actualizarCesta();
+            }
+
+            //eliminar producto
+            eliminarProducto(id) {
+                //debe ponerse p (no poner producto porque hay conflictos)
+                this.#productosCesta = this.#productosCesta.filter(p=> p.id !== id);
+                this.actualizarCesta();
+            }
+
+            //renderizar cesta
+            rendedrizarCesta() {
+            let total = 0;
+            let contenedor = document.getElementById('cesta');
+            contenedor.innerHTML = ''; //limpia la tabla antes de renderizar
+
+            this.#productosCesta.forEach(({ id, cantidad }) => {
+                let producto = app.contProductos.obtenerProductoPorCodigo(id);
+                if (producto) {
+                    let subtotal = producto.precio * cantidad;
+                    total += subtotal;
+
+                    //crear una nueva fila para la tabla
+                    let fila = document.createElement('tr');
+
+                    //crear celdas para los datos del producto
+                    let celdaId = document.createElement('td');
+                    celdaId.textContent = id;
+
+                    let celdaNombre = document.createElement('td');
+                    celdaNombre.textContent = producto.nombre;
+
+                    let celdaCantidad = document.createElement('td');
+                    celdaCantidad.textContent = cantidad;
+
+                    let celdaSubtotal = document.createElement('td');
+                    celdaSubtotal.textContent = `${subtotal.toFixed(2)} €`;
+
+                    let celdaEliminar = document.createElement('td');
+                    let botonEliminar = document.createElement('button');
+                    botonEliminar.className = 'btn btn-danger btn-sm';
+                    botonEliminar.textContent = 'Eliminar';
+
+                    //agregar evento de eliminación con addEventListener
+                    botonEliminar.addEventListener('click', () => {
+                        app.cesta.eliminarProducto(id);
+                    });
+
+                     celdaEliminar.appendChild(botonEliminar);
+
+                    //añadir celdas a la fila
+                    fila.append(celdaId, celdaNombre, celdaCantidad, celdaSubtotal, celdaEliminar);
+
+                    //añadir la fila al contenedor
+                    contenedor.appendChild(fila);
+                    }
+                    
+                });
+                let totalIVA = total * 1.21;
+                document.getElementById('total').textContent = `Total: ${total.toFixed(2)} €`;
+                document.getElementById('totalIVA').textContent = `Total + IVA (21%): ${totalIVA.toFixed(2)} €`;
+            }
+
+            //actualizar cesta
+            actualizarCesta() {
+                this.guardarEstadoCesta();
+                this.rendedrizarCesta();
+                
+            }
+
+            //guardar el estado de la cesta en localStorage
+            guardarEstadoCesta() {
+            let cestaJSON = JSON.stringify(this.#productosCesta);
+            localStorage.setItem("cesta", cestaJSON);
+            console.log("Estado guardado en localStorage:", cestaJSON); // depuración
+            }
+
+            //recuperar el estado de la cesta desde localStorage
+            recuperarEstadoCesta() {
+                let cestaJSON = localStorage.getItem("cesta");
+                //console.log("Estado recuperado de localStorage:", cestaJSON); //depuración
+                    this.#productosCesta = JSON.parse(cestaJSON);
+                    console.log(this.#productosCesta)
+                //this.rendedrizarCesta
+            }
+        }
+
+        class App {
+            constructor() {
+                let productosArray = [
+                    ['001', 'Bolso', 20, 'https://cdn.pixabay.com/photo/2013/07/12/17/39/handbag-152158_1280.png'],
+                    ['002', 'Móvil', 120, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_1280.png'],
+                    ['003', 'Taza', 10, 'https://cdn.pixabay.com/photo/2012/04/13/00/57/coffee-31491_1280.png'],
+                    ['004', 'Zapatos', 50, 'https://cdn.pixabay.com/photo/2023/05/03/22/43/tennis-7968714_1280.png'],
+                    ['005', 'Vestido', 30, 'https://cdn.pixabay.com/photo/2013/07/12/15/40/gown-150290_1280.png'],
+                    ['006', 'Cámara', 100, 'https://cdn.pixabay.com/photo/2012/04/13/17/00/camera-32871_1280.png'],
+                    ['007', 'Cámara', 100, 'https://cdn.pixabay.com/photo/2012/04/13/17/00/camera-32871_1280.png']
+                ];
+
+                this.contProductos = new ContProductos(productosArray);
+                this.cesta = new Cesta();
+                this.contProductos.renderizar();
+            }
+        }
+
+        let app = new App();
+    </script>
+</body>
+</html>
