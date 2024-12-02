@@ -191,6 +191,8 @@
                     //añadir la fila al contenedor
                     contenedor.appendChild(fila);
                     }
+                    //this.guardarEstadoCesta;
+                    //this.recuperarEstadoCesta;
                     
                 });
                 let totalIVA = total * 1.21;
@@ -218,7 +220,7 @@
                 //console.log("Estado recuperado de localStorage:", cestaJSON); //depuración
                     this.#productosCesta = JSON.parse(cestaJSON);
                     console.log(this.#productosCesta)
-                //this.rendedrizarCesta
+                this.rendedrizarCesta;
             }
         }
 
