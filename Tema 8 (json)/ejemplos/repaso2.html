@@ -65,32 +65,23 @@
     </div>
 
     <script>
-
         class Articulo {
-
             constructor(id, cod, color, piel) {
-
                 this.id = id;
                 this.cod = cod;
                 this.color = color;
                 this.piel = piel;
-
             }
-
         }
 
         class Cartera extends Articulo {
-
             constructor(id, cod, color, piel, bolsillo) {
-
                 super(id, cod, color, piel);
                 this.bolsillo = bolsillo;
             }
-
         }
 
         class Base {
-
             #articulos = [];
 
             constructor() {
@@ -99,12 +90,12 @@
                 this.#mostrarArticulo();
             }
 
-
             #fEvento() {
                 const form = document.getElementById('form-articulos');
-                form.addEventListener('submit');
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
                     this.#alta();
-                
+                });
             }
 
             #alta() {
@@ -115,20 +106,22 @@
 
                 const id = this.#articulos.length + 1;
 
-
-                const cartera = new Cartera(id,cod, color, piel, bolsillo);
+                const cartera = new Cartera(id, cod, color, piel, bolsillo);
                 this.#articulos.push(cartera);
                 this.#mostrarArticulo();
+            }
 
+            eliminarArticulo(id) {
+                //debe ponerse p (no poner producto porque hay conflictos)
+                this.#articulos = this.#articulos.filter(a => a.id !== id);
+                this.#mostrarArticulo(); // Actualizar la tabla
             }
 
             #mostrarArticulo() {
-
                 const tabla = document.getElementById('tabla-articulos');
                 tabla.innerHTML = "";
 
                 this.#articulos.forEach(cartera => {
-
                     const fila = document.createElement('tr');
 
                     //Creamops fila de cod
@@ -156,17 +149,26 @@
                     bolsilloF.textContent = cartera.bolsillo;
                     fila.appendChild(bolsilloF);
 
+                    let celdaEliminar = document.createElement('td');
+                    let botonEliminar = document.createElement('button');
+                    botonEliminar.className = 'btn btn-danger btn-sm';
+                    botonEliminar.textContent = 'Eliminar';
+
+                    //agregar evento de eliminación con addEventListener
+                    botonEliminar.addEventListener('click', () => {
+                        this.eliminarArticulo(cartera.id);
+                    });
+
+                    celdaEliminar.appendChild(botonEliminar);
+                    fila.appendChild(celdaEliminar);
+
                     // Añadir fila completa a la tabla
                     tabla.appendChild(fila);
-
                 });
-
             }
-
         }
 
         const app = new Base();
-
     </script>
 </body>
 
