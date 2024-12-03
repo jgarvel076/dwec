@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html> 
+<head>
+    <meta charset="UTF-8" >
+    <link 
+        rel="stylesheet" 
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+    >
+    <style type="text/css">
+        input:invalid {border: 1px solid red; }
+        input:valid {border: 1px solid green;}   
+    </style>
+<script>
+
+    class Articulo {
+
+        constructor(cod, color, piel) {
+            
+            this.id = Articulo.incrementaId();
+            this.cod = cod;
+            this.color = color;
+            this.piel = piel;
+        }
+
+        incrementaId() {
+
+            if (!this.currentId) this.currentId = 1;
+            else this.currentId++;
+            return this.currentId;
+
+        }
+
+    }
+
+    class Cartera extends Articulo {
+        constructor(id, cod, color, piel, bolsillo) {
+            super(id, cod, color, piel);
+            this.bolsillo = bolsillo;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+    var base = (function() {
+        class Base {
+        constructor() {
+            this.articulos = [];
+            this.#fEvento();
+        }
+
+        #fEvento() {
+            var formulario = document.getElementById("f1");
+            formulario.addEventListener("submit", function(evento) {
+                evento.preventDefault();
+                this.#alta();
+            }.bind(this));
+        }
+
+        #alta() {
+            this.articulos.splice(0, this.articulos.length);
+            var cod = document.getElementById("cod").value;
+            var color = document.getElementById("color").value;
+            var piel = document.getElementById("piel").value;
+            var bolsillo = document.getElementById("bolsillo").value;
+            var id = this.articulos.length + 1;
+            var articulo = new Cartera(id, cod, color, piel, bolsillo);
+            this.articulos.push(articulo);
+
+            var tabla = document.getElementById("carteras");
+            this.articulos.forEach(function(articulo) {
+            var fila = tabla.insertRow();
+            var celdaId = fila.insertCell();
+            var celdaCod = fila.insertCell();
+            var celdaColor = fila.insertCell();
+            var celdaPiel = fila.insertCell();
+            var celdaBolsillo = fila.insertCell();
+
+            celdaId.innerHTML = articulo.id;
+            celdaCod.innerHTML = articulo.cod;
+            celdaColor.innerHTML = articulo.color;
+            celdaPiel.innerHTML = articulo.piel;
+            celdaBolsillo.innerHTML = articulo.bolsillo;
+            });
+        }
+    }
+        return new Base();
+    })();
+});
+</script>
+</head>
+<body>    
+    <div class="container">
+        <div class="row" >       
+            <h2>Alta de artículos: Carteras </h2>
+            <br><br><br>
+        </div>  
+        <form id="f1">       
+            <div  >
+                <div class="col-md-3">
+                    <div class="form-group">
+                            <label >Cod:
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="cod"  
+                                placeholder="5 dígitos + A"  
+                                pattern="^[0-9]{5}[A]$" 
+                                name="cod" 
+                                required>
+                            </label> 
+
+                    </div> 
+                </div>      
+            </div>
+
+            <div >   
+                <div class="col-md-3">
+                        <div class="form-group">
+                                <label>Color:
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="color"  
+                                        name="color"   
+                                        required>
+                                </label>
+                        </div> 
+                </div> 
+            </div>
+            <div >   
+                <div class="col-md-3">
+                        <div class="form-group">
+                                <label>Piel:
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="piel"  
+                                        name="piel"   
+                                        required>
+                                </label>
+                        </div> 
+                </div> 
+            </div>
+            <div >   
+                <div class="col-md-3">
+                        <div class="form-group">
+                                <label>Bolsillo:
+                                    <input 
+                                        type="text" 
+                                        class="form-control"  
+                                        id="bolsillo"  
+                                        name="bolsillo" 
+                                        placeholder="SI/NO"   
+                                        required>
+                                </label>
+                        </div> 
+                </div> 
+            </div>
+            
+            <br>
+            <button 
+                id="bot" 
+                type="submit" 
+                class="btn btn-primary">
+                Dar de alta
+            </button>     
+        </form>
+        <br><br><br>
+        <div class="row" >         
+            <h3>Stock carteras </h2>
+                <table  class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Cod.</th>
+                        <th scope="col">Color</th>
+                        <th scope="col">Piel</th>
+                        <th scope="col">Bolsillo</th>
+                        </tr>
+                    </thead>
+                    <!-- Cuerpo donde añadir registros de carteras -->
+                    <tbody id="carteras"></tbody>
+                </table>
+        </div>
+    
+    </div>  
+  
+</body>
+</html>

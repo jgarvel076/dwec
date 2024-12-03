@@ -147,6 +147,7 @@
 
             //renderizar cesta
             rendedrizarCesta() {
+                this.recuperarEstadoCesta();
             let total = 0;
             let contenedor = document.getElementById('cesta');
             contenedor.innerHTML = ''; //limpia la tabla antes de renderizar
@@ -191,8 +192,6 @@
                     //añadir la fila al contenedor
                     contenedor.appendChild(fila);
                     }
-                    //this.guardarEstadoCesta;
-                    //this.recuperarEstadoCesta;
                     
                 });
                 let totalIVA = total * 1.21;
