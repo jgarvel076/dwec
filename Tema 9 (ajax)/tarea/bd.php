@@ -15,14 +15,6 @@
                 ];
                 $this->pdo = new PDO($dsn, "root", "", $options);
             } catch (PDOException $e) {
-                // definimos la información del error
-                echo "ERROR BASE DE DATOS: ";
-                echo "<HR>";
-                echo "Mensaje de Error:      ". $e->getMessage(). "<BR>";
-                echo "Código de Error:     ". $e->getCode(). "<BR>";
-                echo "Fichero:      ". $e->getFile(). "<BR>";
-                echo "Linea:        ". $e->getLine(). "<BR>";
-                echo "Trace:        ". $e->getTraceAsString(). "<BR>";
                 exit();
             }
         }
