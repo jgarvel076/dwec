@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        
+        class Pregunta {
+            constructor(enunciado, respuestaCorrecta) {
+                this.enunciado = enunciado;
+                this.respuestaCorrecta = respuestaCorrecta;
+            }
+
+            pregHTML() {
+                // contenedor
+                let divPregunta = document.createElement('div');
+                divPregunta.classList.add('pregunta');
+
+                // enunciado
+                let enunciadoElem = document.createElement('h3');
+                enunciadoElem.textContent = this.enunciado;
+
+                this.#colorChange(enunciadoElem);
+
+                divPregunta.appendChild(enunciadoElem);
+
+                // opciones de respuesta
+                let opciones = ['a', 'b', 'c'];
+                opciones.forEach((opcion) => {
+                    let label = document.createElement('label');
+                    label.textContent = opcion ;
+
+                    let radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = this.enunciado;
+                    radio.value = opcion;
+
+                    // marcar respuesa
+                    if (opcion === this.respuestaCorrecta) {
+                        radio.checked = true;
+                    }
+
+                    label.appendChild(radio);
+                    divPregunta.appendChild(label);
+                });
+
+                return divPregunta;
+            }
+
+            #colorChange(enunciadoElem){
+                enunciadoElem.addEventListener('click', () => {
+                    enunciadoElem.style.color = enunciadoElem.style.color === 'blue' ? 'black' : 'blue';
+                });
+            }
+        }
+
+        class Main {
+            constructor(url) {
+                this.url = url; // URL JSON
+            }
+
+            // leer el JSON
+            readJSON() {
+                
+                let xhttp = new XMLHttpRequest();
+
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        let preguntas = JSON.parse(this.responseText);
+
+                        preguntas.forEach((pregunta) => {
+                            let nuevaPregunta = new Pregunta(pregunta.enunciado, pregunta.respuesta);
+                            document.body.appendChild(nuevaPregunta.pregHTML());
+                        });
+                    }
+                };
+
+                xhttp.open("GET", this.url, true);
+
+                xhttp.send();
+            }
+        }
+
+        // instancia
+        let urlJSON = 'Examen3_1Eva_24_25.json';
+        let app = new Main(urlJSON);
+
+        app.readJSON();
+
+    </script>
+</head>
+<body>
+</body>
+</html>
