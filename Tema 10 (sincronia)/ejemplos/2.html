@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es">
+    <meta charset="UTF-8">
+<body>
+    <script> 
+        var promise = new Promise(function(resolve, reject) {
+            setTimeout(()=>resolve('ok'), 2000);
+            //setTimeout(()=>reject('err devuelto'), 2000);
+        })
+        promise
+          .then(function(mensaje) {console.log(mensaje)})
+          .catch(function(err) {console.error('ERROR: ' + err)})
+        </script>
+</body>
+</html>
