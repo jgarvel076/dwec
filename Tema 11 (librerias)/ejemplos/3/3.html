@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(function() {
+        $.ajax({
+            'type': "POST",
+            'url': "jsonPOSTJsonArray.php",
+            'contentType': "application/json",
+            'data': JSON.stringify(
+                [{nombre:'Juan',ciudad:'Ubrique'},{nombre:'Juan1',ciudad:'Ubrique1'}]
+            ),
+            'success': function(response) {
+                var obj = JSON.parse(response);
+                $("#demo").html(`Desde servidor ${obj[0].nombre} de ${obj[0].ciudad}`);
+            }
+        });
+
+    });
+ </script>
+</head>
+<body>
+    <div id="demo"></div>
+</body>
+</html>
