@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      //Usamos la función fetch
+      function funFetch(url, fun) {
+            fetch(url)
+                // Realizamos varias promesas
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error');
+                    }
+                    return response.json();
+                })
+
+                .then(data => fun(data))
+                .catch(error => console.error(error));
+        }
+
+      // lista de selección 
+      function selectNombres(data) {
+        var lista = document.getElementById("listaDesplegable");
+        var seleccion = "<option disabled selected>Selecciona un Cliente</option>";
+
+        for (var persona of data) {
+          seleccion += `<option value="${persona.id}">${persona.nombre}</option>`;
+        }
+        lista.innerHTML += seleccion;
+
+        lista.addEventListener("change", function () {
+          funFetch(`bd.php?id=${this.value}`, generarTabla);
+        });
+      }
+
+      // generar tabla
+      function generarTabla(data) {
+        let tablaDatos = document.getElementById("tabla");
+        tablaDatos.innerHTML = "";
+
+        if (data.length > 0) {
+          var tabla = `
+            <tr><th>ID</th><td>${data[0].id}</td></tr>
+            <tr><th>Nombre</th><td>${data[0].nombre}</td></tr>
+            <tr><th>Apellidos</th><td>${data[0].apellidos}</td></tr>
+            <tr><th>Ciudad</th><td>${data[0].ciudad}</td></tr>`;
+          tablaDatos.style.border = "2px solid black";
+          tablaDatos.style.marginTop = "10px";
+          tablaDatos.innerHTML = tabla;
+        } else {
+          tablaDatos.innerHTML = "<tr><td>No se encontraron datos del cliente.</td></tr>";
+        }
+      }
+
+      // cargar nombres de clientes
+      window.onload = function () {
+        funFetch("bd.php?nombresId", selectNombres);
+      };
+    </script>
+  </head>
+  <body>
+    <h2>Tarea 10 ajax</h2>
+    <select id="listaDesplegable"></select>
+    <br />
+    <table id="tabla">
+      <tr><td>La tabla se cargará aquí...</td></tr>
+    </table>
+  </body>
+</html>
