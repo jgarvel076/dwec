@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // creamos el AJAX 
+      function funAjax(url, fun) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+              fun(this);
+            } else {
+              console.error("Error al realizar la solicitud AJAX:", this.status);
+          }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+      }
+
+      // lista de selección 
+      function selectNombres(xhttp) {
+        let objeto = JSON.parse(xhttp.responseText);
+        var lista = document.getElementById("listaDesplegable");
+        var seleccion = "<option disabled selected>Selecciona un cliente</option>";
+
+        for (var persona of objeto) {
+          seleccion += `<option value="${persona.id}">${persona.nombre}</option>`;
+        }
+        lista.innerHTML = seleccion;
+
+        lista.addEventListener("change", function () {
+          funAjax(`bd.php?id=${this.value}`, generarTabla);
+        });
+      }
+
+      // generar tabla
+      function generarTabla(xhttp) {
+        let objeto = JSON.parse(xhttp.responseText);
+        let tablaDatos = document.getElementById("tabla");
+        tablaDatos.innerHTML = "";
+
+        if (objeto.length > 0) {
+          var tabla = `
+            <tr><th>ID</th><td>${objeto[0].id}</td></tr>
+            <tr><th>Nombre</th><td>${objeto[0].nombre}</td></tr>
+            <tr><th>Apellidos</th><td>${objeto[0].apellidos}</td></tr>
+            <tr><th>Ciudad</th><td>${objeto[0].ciudad}</td></tr>`;
+          tablaDatos.style.border = "2px solid black";
+          tablaDatos.style.marginTop = "10px";
+          tablaDatos.innerHTML = tabla;
+        } else {
+          tablaDatos.innerHTML = "<tr><td>No se encontraron datos del cliente.</td></tr>";
+        }
+      }
+
+      // cargar nombres de clientes
+      window.onload = function () {
+        funAjax("bd.php?nombresId", selectNombres);
+      };
+    </script>
+  </head>
+  <body>
+    <h2>Tarea 9 ajax</h2>
+    <select id="listaDesplegable"></select>
+    <br />
+    <table id="tabla">
+      <tr><td>La tabla se cargará aquí...</td></tr>
+    </table>
+  </body>
+</html>
