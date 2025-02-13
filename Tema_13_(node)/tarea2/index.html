@@ -1,2 +1,98 @@
-<!-- jgarvel076
-mEm9uB8vRAheknq5 -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB Cloud y Node.js</title>
+</head>
+<body>
+    <h2>Lista de Usuarios</h2>
+    <ul id="lista"></ul>
+
+    <input type="text" id="nombre" placeholder="Nombre">
+    <input type="text" id="apellido" placeholder="Apellido">
+    <button id="btnAgregar">Añadir</button>
+
+    <h2>Lista de Alumnos</h2>
+    <table id="tablaAlumnos" border="1">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+            </tr>
+        </thead>
+        <tbody id="tablaBody"></tbody>
+    </table>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const tablaBody = document.getElementById("tablaBody");
+            const btnAgregar = document.getElementById("btnAgregar");
+            const nombreInput = document.getElementById("nombre");
+            const apellidoInput = document.getElementById("apellido");
+
+            // Cargar alumnos desde la API
+            async function cargarAlumnos() {
+                try {
+                    const respuesta = await fetch("/alumnos");
+                    const alumnos = await respuesta.json();
+
+                    // Limpiar la tabla antes de actualizar
+                    tablaBody.innerHTML = "";
+
+                    // Verifica si hay alumnos
+                    if (alumnos.length === 0) {
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = "<td colspan='2'>No hay alumnos disponibles</td>";
+                        tablaBody.appendChild(tr);
+                    } else {
+                        alumnos.forEach(alumno => {
+                            const tr = document.createElement("tr");
+                            tr.innerHTML = `<td>${alumno.nombre}</td><td>${alumno.apellido}</td>`;
+                            tablaBody.appendChild(tr);
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error al cargar alumnos:", error);
+                }
+            }
+
+            // Agregar un nuevo alumno
+            async function agregarAlumno() {
+                const nombre = nombreInput.value.trim();
+                const apellido = apellidoInput.value.trim();
+
+                if (!nombre || !apellido) {
+                    alert("Por favor, completa ambos campos.");
+                    return;
+                }
+
+                try {
+                    const respuesta = await fetch("/alumnos", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ nombre, apellido }),
+                    });
+
+                    if (respuesta.ok) {
+                        nombreInput.value = "";
+                        apellidoInput.value = "";
+                        cargarAlumnos(); // Recargar lista y tabla con el nuevo alumno
+                    } else {
+                        const error = await respuesta.json();
+                        alert(error.error || "Error al agregar alumno");
+                    }
+                } catch (error) {
+                    console.error("Error al añadir alumno:", error);
+                }
+            }
+
+            // Evento para añadir alumno
+            btnAgregar.addEventListener("click", agregarAlumno);
+
+            // Cargar alumnos al inicio
+            cargarAlumnos();
+        });
+    </script>
+</body>
+</html>

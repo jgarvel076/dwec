@@ -1,54 +1,66 @@
-import express from "express";
-import { MongoClient, ServerApiVersion } from "mongodb";
-import cors from "cors";
+import express from 'express';
+import { MongoClient, ServerApiVersion } from 'mongodb';
+import path from 'path';
+import cors from 'cors';
 
+// Configurar Express
 const app = express();
 const port = 3000;
-
-const uri = "mongodb+srv://jgarvel076:mEm9uB8vRAheknq5@cluster0.tvn2x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
-
 app.use(express.json());
-app.use(cors());
 
-async function connectDB() {
+// Habilitar CORS
+app.use(cors());  // Esto permite que el frontend haga solicitudes al backend sin problemas de CORS
+
+// Servir archivos estáticos (HTML y JS)
+app.use(express.static(path.join(__dirname)));
+
+// Conectar a MongoDB
+const uri = "mongodb+srv://rsansan079:tHdChGXlqPfhoglc@actividad2dwec.ppd4e.mongodb.net/?retryWrites=true&w=majority&appName=Actividad2DWEC";
+const client = new MongoClient(uri, { serverApi: ServerApiVersion.v1 });
+
+let collection;
+
+async function conectarDB() {
   try {
     await client.connect();
-    console.log("Conectado a MongoDB");
-  } catch (err) {
-    console.error("Error conectando a MongoDB", err);
+    collection = client.db("Centro").collection("Alumnos");
+    console.log("Conectado a MongoDB Cloud");
+  } catch (error) {
+    console.error("Error al conectar a la base de datos:", error);
   }
 }
-connectDB();
 
-const db = client.db("Centro");
-const collection = db.collection("Usuarios");
-
-app.get("/usuarios", async (req, res) => {
+// Rutas 
+app.get('/alumnos', async (req, res) => {
   try {
-    const usuarios = await collection.find({}).toArray();
-    res.json(usuarios);
-  } catch (err) {
-    res.status(500).json({ error: "Error obteniendo usuarios" });
+    const alumnos = await collection.find().toArray();
+    res.json(alumnos);
+  } catch (error) {
+    console.error("Error al obtener alumnos:", error);
+    res.status(500).send("Error al obtener alumnos.");
   }
 });
 
-app.post("/usuarios", async (req, res) => {
+app.post('/alumnos', async (req, res) => {
+  const { nombre, apellido } = req.body;
+  if (!nombre || !apellido) return res.status(400).json({ error: "Nombre y apellido son obligatorios" });
+
   try {
-    const { nombre, apellido } = req.body;
-    await collection.insertOne({ nombre, apellido });
-    res.json({ mensaje: "Usuario agregado" });
-  } catch (err) {
-    res.status(500).json({ error: "Error agregando usuario" });
+    const resultado = await collection.insertOne({ nombre, apellido });
+    res.json({ mensaje: "Alumno añadido", id: resultado.insertedId });
+  } catch (error) {
+    console.error("Error al agregar alumno:", error);
+    res.status(500).json({ error: "Error al agregar alumno." });
   }
 });
 
-app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
+// Servir HTML
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Iniciar servidor y conectar a la base de datos
+app.listen(port, async () => {
+  await conectarDB();
+  console.log(`Servidor en http://localhost:${port}`);
 });
