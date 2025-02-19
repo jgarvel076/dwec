@@ -1,21 +1,20 @@
 import express from 'express';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import path from 'path';
-import cors from 'cors';
+import { fileURLToPath } from 'url';
 
 // Configurar Express
 const app = express();
 const port = 3000;
 app.use(express.json());
 
-// Habilitar CORS
-app.use(cors());  // Esto permite que el frontend haga solicitudes al backend sin problemas de CORS
-
-// Servir archivos estáticos (HTML y JS)
-app.use(express.static(path.join(__dirname)));
+// Configurar ruta estática para servir archivos HTML y JS
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(__dirname));
 
 // Conectar a MongoDB
-const uri = "mongodb+srv://rsansan079:tHdChGXlqPfhoglc@actividad2dwec.ppd4e.mongodb.net/?retryWrites=true&w=majority&appName=Actividad2DWEC";
+const uri = "mongodb+srv://jgarvel076:mEm9uB8vRAheknq5@cluster0.tvn2x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const client = new MongoClient(uri, { serverApi: ServerApiVersion.v1 });
 
 let collection;
@@ -30,37 +29,27 @@ async function conectarDB() {
   }
 }
 
-// Rutas 
+// Rutas API
 app.get('/alumnos', async (req, res) => {
-  try {
-    const alumnos = await collection.find().toArray();
-    res.json(alumnos);
-  } catch (error) {
-    console.error("Error al obtener alumnos:", error);
-    res.status(500).send("Error al obtener alumnos.");
-  }
+  const alumnos = await collection.find().toArray();
+  res.json(alumnos);
 });
 
 app.post('/alumnos', async (req, res) => {
   const { nombre, apellido } = req.body;
   if (!nombre || !apellido) return res.status(400).json({ error: "Nombre y apellido son obligatorios" });
 
-  try {
-    const resultado = await collection.insertOne({ nombre, apellido });
-    res.json({ mensaje: "Alumno añadido", id: resultado.insertedId });
-  } catch (error) {
-    console.error("Error al agregar alumno:", error);
-    res.status(500).json({ error: "Error al agregar alumno." });
-  }
+  const resultado = await collection.insertOne({ nombre, apellido });
+  res.json({ mensaje: "Alumno añadido", id: resultado.insertedId });
 });
 
-// Servir HTML
+// Ruta para ve el HTML
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, "2.html"));
 });
 
-// Iniciar servidor y conectar a la base de datos
+// Iniciamos servidor
 app.listen(port, async () => {
   await conectarDB();
-  console.log(`Servidor en http://localhost:${port}`);
+  console.log(`Mostrando en http://localhost:${port}`);
 });

@@ -31,27 +31,20 @@
             const nombreInput = document.getElementById("nombre");
             const apellidoInput = document.getElementById("apellido");
 
-            // Cargar alumnos desde la API
+            // Cargar alumnos 
             async function cargarAlumnos() {
                 try {
                     const respuesta = await fetch("/alumnos");
                     const alumnos = await respuesta.json();
 
-                    // Limpiar la tabla antes de actualizar
+                    // Limpiarmos la tabla 
                     tablaBody.innerHTML = "";
 
-                    // Verifica si hay alumnos
-                    if (alumnos.length === 0) {
+                    alumnos.forEach(alumno => {
                         const tr = document.createElement("tr");
-                        tr.innerHTML = "<td colspan='2'>No hay alumnos disponibles</td>";
+                        tr.innerHTML = `<td>${alumno.nombre}</td><td>${alumno.apellido}</td>`;
                         tablaBody.appendChild(tr);
-                    } else {
-                        alumnos.forEach(alumno => {
-                            const tr = document.createElement("tr");
-                            tr.innerHTML = `<td>${alumno.nombre}</td><td>${alumno.apellido}</td>`;
-                            tablaBody.appendChild(tr);
-                        });
-                    }
+                    });
                 } catch (error) {
                     console.error("Error al cargar alumnos:", error);
                 }
@@ -87,7 +80,7 @@
                 }
             }
 
-            // Evento para añadir alumno
+            // añadir alumno
             btnAgregar.addEventListener("click", agregarAlumno);
 
             // Cargar alumnos al inicio
