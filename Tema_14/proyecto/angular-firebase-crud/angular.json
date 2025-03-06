@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-firebase-crud": {
+    "angularFire25": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/angular-firebase-crud",
+            "outputPath": "dist/angular-fire25",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -37,6 +37,7 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -69,10 +70,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-firebase-crud:build:production"
+              "buildTarget": "angularFire25:build:production"
             },
             "development": {
-              "buildTarget": "angular-firebase-crud:build:development"
+              "buildTarget": "angularFire25:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -95,6 +96,7 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
             "scripts": []

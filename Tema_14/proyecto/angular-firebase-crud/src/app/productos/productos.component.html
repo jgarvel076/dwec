@@ -1,0 +1,14 @@
+<div>
+  <h2>Lista de Productos</h2>
+  <ul>
+    <li *ngFor="let producto of productos | async">
+      <img [src]="producto.url" width="50"> {{ producto.name }} - ${{ producto.price }}
+    </li>
+  </ul>
+
+  <h3>Agregar Producto</h3>
+  <input [(ngModel)]="newProducto.name" placeholder="Nombre">
+  <input [(ngModel)]="newProducto.price" type="number" placeholder="Precio">
+  <input [(ngModel)]="newProducto.url" placeholder="Imagen URL">
+  <button (click)="addProducto()">Agregar</button>
+</div>

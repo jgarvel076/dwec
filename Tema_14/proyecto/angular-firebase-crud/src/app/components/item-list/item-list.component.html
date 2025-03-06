@@ -1,0 +1,7 @@
+<h2>Lista de Items</h2>
+<input [(ngModel)]="newItem" placeholder="Nuevo ítem" />
+<button (click)="addItem()">Agregar</button>
+
+<ul>
+  <li *ngFor="let item of items">{{ item.name }}</li>
+</ul>
