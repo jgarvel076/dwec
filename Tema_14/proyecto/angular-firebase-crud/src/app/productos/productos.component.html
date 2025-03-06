@@ -1,10 +1,29 @@
 <div>
   <h2>Lista de Productos</h2>
-  <ul>
+  <!-- <ul>
     <li *ngFor="let producto of productos | async">
       <img [src]="producto.url" width="50"> {{ producto.name }} - ${{ producto.price }}
     </li>
-  </ul>
+  </ul> -->
+  <div class="grid-container">
+    <div *ngFor="let producto of productos | async">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-text">
+            <h2 class="card-title">{{ producto.name }}</h2>
+            <p class="card-subtitle">Precio: {{ producto.price | currency }}</p>
+          </div>
+        </div>
+        <img class="card-image" [src]="producto.url" >
+        <div class="card-content">
+          <!-- Puedes agregar más detalles del producto aquí -->
+        </div>
+        <div class="card-actions">
+          <!-- Botón de eliminación comentado, ya que no se implementa delete -->
+          <!-- <button (click)="onDelete(prod.id)">Eliminar</button> -->
+        </div>
+      </div>
+    </div>
 
   <h3>Agregar Producto</h3>
   <input [(ngModel)]="newProducto.name" placeholder="Nombre">

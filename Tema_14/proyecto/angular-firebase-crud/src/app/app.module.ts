@@ -15,6 +15,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatCardModule} from '@angular/material/card';
 import { AppRoutingModule } from './app-routing.module';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 @NgModule({
   declarations: [AppComponent, ItemListComponent, MenuComponent, HomeComponent, ProductosComponent, ContactoComponent, PagenotfoundComponent],
@@ -24,7 +26,9 @@ import { AppRoutingModule } from './app-routing.module';
     MatToolbarModule,
     MatFormFieldModule,
     MatCardModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
   ],
   providers: [provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore())],
