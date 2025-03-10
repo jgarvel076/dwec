@@ -1,33 +1,48 @@
-import { Component, Renderer2 } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Component, OnInit } from '@angular/core';
+import { FirebaseService } from '../services/firebase.service';
 import { Observable } from 'rxjs';
-
-export interface Producto {
-  id?: string;
-  name: string;
-  price: number;
-  url: string;
-}
+import { NgForm } from '@angular/forms';
 
 @Component({
+  standalone:false,
   selector: 'app-productos',
-  standalone: false,
   templateUrl: './productos.component.html',
-  styleUrls: ['./productos.component.css']
+  styleUrl: './productos.component.css'
 })
-export class ProductosComponent {
-  productos: Observable<Producto[]>;
-  newProducto: Producto = { name: '', price: 0, url: '' };
+export class ProductosComponent implements OnInit {
+  productos: any[] = [];  // Lista de productos
+  nuevoProducto = { name: '', precio: 0, url: '' }; // Modelo del nuevo producto
 
-  constructor(private firestore: AngularFirestore, private renderer: Renderer2) {
-    this.productos = this.firestore.collection<Producto>('products').valueChanges({ idField: 'id' });
+  constructor(private firebaseService: FirebaseService) {}
+
+  ngOnInit() {
+    this.cargarProductos();
+  }
+
+  cargarProductos() {
+    this.firebaseService.getProductos().subscribe(
+      (data: any[]) => {
+        console.log('Productos cargados:', data);
+        this.productos = data;
+      },
+      (error: any) => {
+        console.error('Error cargando productos:', error);
+      }
+    );
   }
 
   addProducto() {
-    if (this.newProducto.name && this.newProducto.price && this.newProducto.url) {
-      this.firestore.collection('products').add(this.newProducto).then(() => {
-        this.newProducto = { name: '', price: 0, url: '' };
-      });
+    if (!this.nuevoProducto.name || !this.nuevoProducto.precio || !this.nuevoProducto.url) {
+      alert('Por favor, complete todos los campos.');
+      return;
     }
+
+    this.firebaseService.addItem(this.nuevoProducto)
+      .then(() => {
+        alert('Producto añadido con éxito');
+        this.nuevoProducto = { name: '', precio: 0, url: '' }; // Reiniciar el formulario
+        this.cargarProductos(); // Recargar la lista de productos
+      })
+      .catch(error => console.error('Error al añadir producto:', error));
   }
 }

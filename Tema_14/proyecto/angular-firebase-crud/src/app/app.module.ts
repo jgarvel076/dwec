@@ -11,12 +11,15 @@ import { HomeComponent } from './home/home.component';
 import { ProductosComponent } from './productos/productos.component';
 import { ContactoComponent } from './contacto/contacto.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatCardModule} from '@angular/material/card';
 import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent, ItemListComponent, MenuComponent, HomeComponent, ProductosComponent, ContactoComponent, PagenotfoundComponent],
@@ -28,7 +31,10 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     MatCardModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    MatButtonModule,
+    MatInputModule,
+    BrowserAnimationsModule
   ],
   providers: [provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore())],
